@@ -1,18 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="style.css" rel="stylesheet">
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+	  <link rel="preconnect" href="https://fonts.googleapis.com">
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maotys Linktree</title>
+    <title>This or That</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
     <h1 class="text-3xl font-bold">
-      Linktree
+      This or That
     </h1>
-    <div class = "carre">
+
+    <div id = "start" class = "container">
+      <h1> <button type = "button"> Start </button> </h1>
     </div>
+
+  <div id = "content">
+    <div class = "carre">
+      <button id = "this" type="button">This</button>
+    </div>
+
+    <div class = "container">
+        <h1>
+          OR
+        </h1>
+    </div>
+
+    <div class = "carre">
+      <button id = "that" type="button">That</button>
+    </div>
+    
+    <button class = "container" id = "next" type ="button"> NEXT </button>
+
+    <!-- Faire un bouton "submit a question" --> 
+
+  </div>
+
+    <script>
+
+      let question = ["Faire çi",0,"Faire ça",0];
+
+      var start = document.getElementById("start");
+
+      var content = document.getElementById("content");
+      content.style.display = "none";
+
+      var next = document.getElementById("next");
+      next.style.display = "none";
+
+      const elementStart = document.getElementById("start");
+      elementStart.addEventListener("click", initialisation);
+
+      const elementThis = document.getElementById("this");
+      elementThis.addEventListener("click", displayResult);
+
+      const elementThat = document.getElementById("that");
+      elementThat.addEventListener("click", displayResult);
+
+      const elementNext = document.getElementById("next");
+      elementNext.addEventListener("click", nextButton);
+
+      function initialisation(){
+        // pick a random in the Array
+        document.getElementById("this").innerHTML = question[0];
+        document.getElementById("that").innerHTML = question[2];
+        content.style.display = "block";
+        start.style.display = "none";
+      }
+
+      function displayResult() {
+        document.getElementById("this").innerHTML = "% de vote this";
+        document.getElementById("that").innerHTML = "% de vote that";
+        next.style.display = "block";
+      }
+
+      function registerVote() {
+
+      }
+
+      function nextButton() {
+        document.getElementById("this").innerHTML = "This";
+        document.getElementById("that").innerHTML = "That";
+        next.style.display = "none"
+        initialisation();
+      }
+    </script>
   </body>
 </html>
