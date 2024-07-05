@@ -1,2 +1,2 @@
 Hello ! 
-Theses files build the Linktree to Maotys Things.
+Theses files build a site where you can make dumb choice !
