@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="style.css" rel="stylesheet">
-    <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
@@ -11,42 +11,85 @@
 	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>This or That</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
+    <title>This or That</title>
+  
   </head>
+
   <body>
-    <h1 class="text-3xl font-bold">
+    <h1 class="text-4xl font-bold">
       This or That
     </h1>
 
-    <div id = "start" class = "container">
-      <h1> <button type = "button"> Start </button> </h1>
+    <div id = "start" class = "midCentered">
+      <div class ="blue-border">
+        <button class= "text-2xl font-bold" type ="button"> START </button>
+      </div>
     </div>
 
   <div id = "content">
-    <div class = "carre">
-      <button id = "this" type="button">This</button>
+   
+    <div class="centered">
+      <button id = "this" type = "button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      this
+      </button>
     </div>
 
-    <div class = "container">
-        <h1>
-          OR
-        </h1>
+    <div class = "centered">
+      <h1 class ="text-2xl font-bold">
+      OR
+      </h1>
     </div>
 
-    <div class = "carre">
-      <button id = "that" type="button">That</button>
+    <div class = "centered">
+      <button id = "that" type = "button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        That
+      </button>
     </div>
-    
-    <button class = "container" id = "next" type ="button"> NEXT </button>
+
+    <div class ="centered">
+      <h1 class ="text-2xl font-bold"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id = "next" type ="button">
+       NEXT
+      </button> </h1>
+    </div>
 
     <!-- Faire un bouton "submit a question" --> 
 
   </div>
 
-    <script>
+  <input type="file" id="upload" />
+  <pre id="result"></pre>
 
+    <script>
+      //Récupération Excel
+      document.getElementById('upload').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // Assume you want to read the first sheet
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+
+                // Get the value of a specific cell, e.g., A1
+                const cellAddress = 'A1';
+                const cellValue = worksheet[cellAddress]?.v;
+
+                // Output the result
+                document.getElementById('result').textContent = `Value in ${cellAddress}: ${cellValue}`;
+            };
+
+            reader.readAsArrayBuffer(file);
+      });
+      //Fin Récupération Excel
+       
       let question = ["Faire çi",0,"Faire ça",0];
 
       var start = document.getElementById("start");
@@ -84,7 +127,7 @@
       }
 
       function registerVote() {
-
+        //Register the vote in the database
       }
 
       function nextButton() {
@@ -94,5 +137,6 @@
         initialisation();
       }
     </script>
+
   </body>
 </html>
