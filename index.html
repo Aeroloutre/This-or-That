@@ -1,142 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link href="style.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
-	  <link rel="preconnect" href="https://fonts.googleapis.com">
-	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link href="style.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 
-    <title>This or That</title>
-  
-  </head>
+  <title>This or That</title>
 
-  <body>
-    <h1 class="text-4xl font-bold">
-      This or That
-    </h1>
+</head>
 
-    <div id = "start" class = "midCentered">
-      <div class ="blue-border">
-        <button class= "text-2xl font-bold" type ="button"> START </button>
-      </div>
+<body>
+
+  <h1 class="text-4xl font-bold">
+    This or That
+  </h1>
+
+  <h1 class="text-1xl font-bold">
+    The game
+  </h1>
+
+  <div id="start" class="midCentered">
+    <div class="blue-border">
+      <button class="text-2xl font-bold" type="button"> START </button>
     </div>
+  </div>
 
-  <div id = "content">
-   
+  <div id="content">
+
     <div class="centered">
-      <button id = "this" type = "button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      this
+      <button id="this" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        this
       </button>
     </div>
 
-    <div class = "centered">
-      <h1 class ="text-2xl font-bold">
-      OR
+    <div class="centered">
+      <h1 class="text-2xl font-bold">
+        OR
       </h1>
     </div>
 
-    <div class = "centered">
-      <button id = "that" type = "button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <div class="centered">
+      <button id="that" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         That
       </button>
     </div>
 
-    <div class ="centered">
-      <h1 class ="text-2xl font-bold"> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id = "next" type ="button">
-       NEXT
-      </button> </h1>
+    <div class="centered">
+      <h1 class="text-2xl font-bold">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="next" type="button">
+          NEXT
+        </button>
+      </h1>
     </div>
 
-    <!-- Faire un bouton "submit a question" --> 
+    <div class ="centered">
+      <a href="index2.html">Submit a question !</a>
+    </div>
 
   </div>
 
-  <input type="file" id="upload" />
-  <pre id="result"></pre>
+  <script>
 
-    <script>
-      //Récupération Excel
-      document.getElementById('upload').addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            const reader = new FileReader();
+    let question = [
+      {Question1: "Faire çi", Vote1: 1, Question2: "Faire ça", Vote2: 1 },
+      {Question1: "Poulet", Vote1: 1, Question2: "Viande haché", Vote2: 1 }
+    ];
 
-            reader.onload = (e) => {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                
-                // Assume you want to read the first sheet
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
+    let randomInt = 0;
 
-                // Get the value of a specific cell, e.g., A1
-                const cellAddress = 'A1';
-                const cellValue = worksheet[cellAddress]?.v;
+    let arraySize = question.length - 1;
 
-                // Output the result
-                document.getElementById('result').textContent = `Value in ${cellAddress}: ${cellValue}`;
-            };
+    let objIndex = 0;
 
-            reader.readAsArrayBuffer(file);
-      });
-      //Fin Récupération Excel
-       
-      let question = ["Faire çi",0,"Faire ça",0];
+    //let start = document.getElementById("start");
 
-      var start = document.getElementById("start");
+    let content = document.getElementById("content");
+    content.style.display = "none";
 
-      var content = document.getElementById("content");
-      content.style.display = "none";
+    let next = document.getElementById("next");
+    next.style.display = "none";
 
-      var next = document.getElementById("next");
-      next.style.display = "none";
+    const elementStart = document.getElementById("start");
+    console.log(elementStart);
+    elementStart.addEventListener("click", initialisation);
 
-      const elementStart = document.getElementById("start");
-      elementStart.addEventListener("click", initialisation);
+    const elementThis = document.getElementById("this");
+    //elementThis.addEventListener("click", displayResult());
+    //elementThis.addEventListener("click", registerVote1);
+  
 
-      const elementThis = document.getElementById("this");
-      elementThis.addEventListener("click", displayResult);
+    const elementThat = document.getElementById("that");
+    //elementThat.addEventListener("click", displayResult());
+    //elementThat.addEventListener("click", registerVote2);
 
-      const elementThat = document.getElementById("that");
-      elementThat.addEventListener("click", displayResult);
+    const elementNext = document.getElementById("next");
+    elementNext.addEventListener("click", nextButton);
 
-      const elementNext = document.getElementById("next");
-      elementNext.addEventListener("click", nextButton);
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
 
-      function initialisation(){
-        // pick a random in the Array
-        document.getElementById("this").innerHTML = question[0];
-        document.getElementById("that").innerHTML = question[2];
-        content.style.display = "block";
-        start.style.display = "none";
-      }
+    function initialisation() {
+      console.log("initialisation")
+      content.style.display = "block";
+      elementStart.style.display = "none";
+      randomInt = getRandomInt(0, arraySize);
+      objIndex = randomInt;
+      document.getElementById("this").innerHTML = question[objIndex].Question1;
+      document.getElementById("that").innerHTML = question[objIndex].Question2;
 
-      function displayResult() {
-        document.getElementById("this").innerHTML = "% de vote this";
-        document.getElementById("that").innerHTML = "% de vote that";
-        next.style.display = "block";
-      }
+      console.log(objIndex)
+      elementThis.addEventListener("click", registerVote1,{once: true});
+      elementThat.addEventListener("click", registerVote2,{once: true});
+    }
 
-      function registerVote() {
-        //Register the vote in the database
-      }
+    function displayResult() {
+      console.log("displayResult")
+      let resultThis = (question[objIndex].Vote1 / (question[objIndex].Vote1 + question[objIndex].Vote2)) * 100;
+      let resultThat = (question[objIndex].Vote2 / (question[objIndex].Vote1 + question[objIndex].Vote2)) * 100;
+      document.getElementById("this").innerHTML = resultThis.toFixed(1);
+      document.getElementById("that").innerHTML = resultThat.toFixed(1);
+      next.style.display = "block";
+      elementThis.removeEventListener("click", registerVote1,{once: true});
+      elementThat.removeEventListener("click", registerVote2,{once: true});
+    } 
 
-      function nextButton() {
-        document.getElementById("this").innerHTML = "This";
-        document.getElementById("that").innerHTML = "That";
-        next.style.display = "none"
-        initialisation();
-      }
-    </script>
+    function registerVote1() {
+      displayResult()
+      console.log("registerVote1")
+      question[objIndex].Vote1 = question[objIndex].Vote1 + 1;
+    }
 
-  </body>
+    function registerVote2() {
+      displayResult()
+      console.log("registerVote2")
+      question[objIndex].Vote2 = question[objIndex].Vote2 + 1;
+    }
+
+    function nextButton() {
+      console.log("next button")
+      document.getElementById("this").innerHTML = "This";
+      document.getElementById("that").innerHTML = "That";
+      next.style.display = "none"
+
+      question.splice(objIndex, 1);
+      arraySize = question.length - 1;
+
+      initialisation();
+    }
+  </script>
+
+</body>
+
 </html>
