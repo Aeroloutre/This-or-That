@@ -139,15 +139,34 @@
     } 
 
     function registerVote1() {
-      displayResult()
-      console.log("registerVote1")
-      question[objIndex].Vote1 = question[objIndex].Vote1 + 1;
+      question[objIndex].Vote1 += 1;
+      sendVoteToServer(question[objIndex], 'Vote1');
+      displayResult();
     }
 
     function registerVote2() {
-      displayResult()
-      console.log("registerVote2")
-      question[objIndex].Vote2 = question[objIndex].Vote2 + 1;
+      question[objIndex].Vote2 += 1;
+      sendVoteToServer(question[objIndex], 'Vote2');
+      displayResult();
+    }
+
+    function sendVoteToServer(questionObj, voteKey) {
+      const voteData = {
+        question: [questionObj.Question1, questionObj.Question2],
+        vote: voteKey,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch('https://musical-engine-wrvjj9rj5564f94g9-3000.app.github.dev/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(voteData)
+      })
+      .then(response => response.json())
+      .then(data => console.log('Vote enregistré:', data))
+      .catch(error => console.error('Erreur lors de l envoi du vote:', error));
     }
 
     function nextButton() {
