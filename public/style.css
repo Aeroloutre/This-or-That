@@ -29,3 +29,7 @@ h1{
     padding: 20px;
     box-sizing: border-box;
 }
+
+body {
+  background-color: gray;
+}

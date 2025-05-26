@@ -24,6 +24,7 @@
 
 <body>
 
+
   <h1 class="text-4xl font-bold">
     This or That
   </h1>
@@ -73,40 +74,44 @@
   </div>
 
   <script>
+    let data = [];
+    let keys = [];
+    let arraySize;
+    let toDisplayVote1;
+    let toDisplayVote2;
+    let randomInt;
+    let numeroDeQuestion;
 
-    let question = [
-      {Question1: "Faire çi", Vote1: 1, Question2: "Faire ça", Vote2: 1 },
-      {Question1: "Poulet", Vote1: 1, Question2: "Viande haché", Vote2: 1 }
-    ];
+    const content = document.getElementById("content");
+    const next = document.getElementById("next");
+    const elementStart = document.getElementById("start");
+    const elementThis = document.getElementById("this");
+    const elementThat = document.getElementById("that");
+    const elementNext = document.getElementById("next");
 
-    let randomInt = 0;
-
-    let arraySize = question.length - 1;
-
-    let objIndex = 0;
-
-    //let start = document.getElementById("start");
-
-    let content = document.getElementById("content");
     content.style.display = "none";
-
-    let next = document.getElementById("next");
     next.style.display = "none";
 
-    const elementStart = document.getElementById("start");
-    console.log(elementStart);
-    elementStart.addEventListener("click", initialisation);
+    fetch('/questions')
+      .then(response => response.json())
+      .then(json => {
+        data = json;
+        console.log('Questions reçues :', data);
 
-    const elementThis = document.getElementById("this");
-    //elementThis.addEventListener("click", displayResult());
-    //elementThis.addEventListener("click", registerVote1);
-  
+        data.forEach(obj => {
+          keys.push(...Object.keys(obj));
+        });
+        arraySize = data.length - 1;
 
-    const elementThat = document.getElementById("that");
-    //elementThat.addEventListener("click", displayResult());
-    //elementThat.addEventListener("click", registerVote2);
+        elementStart.addEventListener("click", initialisation);
 
-    const elementNext = document.getElementById("next");
+        console.log('data =', data);
+        console.log('data[0] =', data[0]);
+        console.log('data[1] =', data[1]);
+        console.log('keys =', keys);
+      })
+      .catch(error => console.error('Erreur lors de la récupération des questions', error));
+
     elementNext.addEventListener("click", nextButton);
 
     function getRandomInt(min, max) {
@@ -115,59 +120,48 @@
 
     function initialisation() {
       console.log("initialisation")
+
       content.style.display = "block";
       elementStart.style.display = "none";
-      randomInt = getRandomInt(0, arraySize);
-      objIndex = randomInt;
-      document.getElementById("this").innerHTML = question[objIndex].Question1;
-      document.getElementById("that").innerHTML = question[objIndex].Question2;
 
-      console.log(objIndex)
-      elementThis.addEventListener("click", registerVote1,{once: true});
-      elementThat.addEventListener("click", registerVote2,{once: true});
+      numeroDeQuestion = getRandomInt(0, arraySize);
+      console.log(numeroDeQuestion)
+
+      const localKeys = Object.keys(data[numeroDeQuestion]);
+
+      toDisplayVote1 = data[numeroDeQuestion][localKeys[0]];
+      console.log(toDisplayVote1);
+      toDisplayVote2 = data[numeroDeQuestion][localKeys[1]];
+      console.log(toDisplayVote2);
+
+      document.getElementById("this").innerHTML = Object.keys(data[numeroDeQuestion])[0];
+      document.getElementById("that").innerHTML = Object.keys(data[numeroDeQuestion])[1];
+
+      elementThis.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
+      elementThat.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
     }
 
     function displayResult() {
       console.log("displayResult")
-      let resultThis = (question[objIndex].Vote1 / (question[objIndex].Vote1 + question[objIndex].Vote2)) * 100;
-      let resultThat = (question[objIndex].Vote2 / (question[objIndex].Vote1 + question[objIndex].Vote2)) * 100;
-      document.getElementById("this").innerHTML = resultThis.toFixed(1);
-      document.getElementById("that").innerHTML = resultThat.toFixed(1);
+
+      document.getElementById("this").innerHTML = toDisplayVote1
+      document.getElementById("that").innerHTML = toDisplayVote2
+
       next.style.display = "block";
-      elementThis.removeEventListener("click", registerVote1,{once: true});
-      elementThat.removeEventListener("click", registerVote2,{once: true});
+
+      elementThis.removeEventListener("click", displayResult)
+      elementThat.removeEventListener("click", displayResult)
     } 
-
-    function registerVote1() {
-      question[objIndex].Vote1 += 1;
-      sendVoteToServer(question[objIndex], 'Vote1');
-      displayResult();
-    }
-
-    function registerVote2() {
-      question[objIndex].Vote2 += 1;
-      sendVoteToServer(question[objIndex], 'Vote2');
-      displayResult();
-    }
-
+/*
     function sendVoteToServer(questionObj, voteKey) {
       const voteData = {
         question: [questionObj.Question1, questionObj.Question2],
         vote: voteKey,
         timestamp: new Date().toISOString()
       };
-
-      fetch('https://musical-engine-wrvjj9rj5564f94g9-3000.app.github.dev/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(voteData)
-      })
-      .then(response => response.json())
-      .then(data => console.log('Vote enregistré:', data))
-      .catch(error => console.error('Erreur lors de l envoi du vote:', error));
+      
     }
+    */
 
     function nextButton() {
       console.log("next button")
@@ -175,11 +169,9 @@
       document.getElementById("that").innerHTML = "That";
       next.style.display = "none"
 
-      question.splice(objIndex, 1);
-      arraySize = question.length - 1;
-
       initialisation();
     }
+
   </script>
 
 </body>
