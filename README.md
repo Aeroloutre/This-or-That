@@ -1,2 +1,1 @@
-Hello ! 
-Theses files build a site where you can make dumb choice !
+Work in progress to create a site where you can make dumb choices !
