@@ -74,11 +74,7 @@
   </div>
 
   <script>
-    let data = [];
-    let keys = [];
     let arraySize;
-    let toDisplayVote1;
-    let toDisplayVote2;
     let randomInt;
     let numeroDeQuestion;
 
@@ -92,33 +88,39 @@
     content.style.display = "none";
     next.style.display = "none";
 
-    fetch('/questions')
-      .then(response => response.json())
-      .then(json => {
-        data = json;
-        console.log('Questions reçues :', data);
+    async function fetchQuestions() {
+      try {
+        const response = await fetch('/questions');
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des questions', error);
+      }
+    }
 
-        data.forEach(obj => {
-          keys.push(...Object.keys(obj));
-        });
-        arraySize = data.length - 1;
+    (async () => {
+      let data = await fetchQuestions();
+      console.log(data);
 
-        elementStart.addEventListener("click", initialisation);
+      arraySize = data.length - 1;
 
-        console.log('data =', data);
-        console.log('data[0] =', data[0]);
-        console.log('data[1] =', data[1]);
-        console.log('keys =', keys);
-      })
-      .catch(error => console.error('Erreur lors de la récupération des questions', error));
+      console.log('taille de la liste =', arraySize);
+      console.log('data =', data);
+      console.log('data[0] =', data[0]);
+      console.log('data[1] =', data[1]);
+
+      initialisation(data)
+
+    })();
 
     elementNext.addEventListener("click", nextButton);
-
+    elementStart.addEventListener("click", initialisation);
+        
     function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    function initialisation() {
+    function initialisation(data){
       console.log("initialisation")
 
       content.style.display = "block";
@@ -129,13 +131,13 @@
 
       const localKeys = Object.keys(data[numeroDeQuestion]);
 
-      toDisplayVote1 = data[numeroDeQuestion][localKeys[0]];
-      console.log(toDisplayVote1);
-      toDisplayVote2 = data[numeroDeQuestion][localKeys[1]];
-      console.log(toDisplayVote2);
+      let toDisplayVote1 = data[numeroDeQuestion][0];
+      console.log('vote1',toDisplayVote1);
+      let toDisplayVote2 = data[numeroDeQuestion][1];
+      console.log('vote2',toDisplayVote2);
 
-      document.getElementById("this").innerHTML = Object.keys(data[numeroDeQuestion])[0];
-      document.getElementById("that").innerHTML = Object.keys(data[numeroDeQuestion])[1];
+      document.getElementById("this").innerHTML = data[numeroDeQuestion][0];
+      document.getElementById("that").innerHTML = data[numeroDeQuestion][1];
 
       elementThis.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
       elementThat.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
@@ -152,6 +154,8 @@
       elementThis.removeEventListener("click", displayResult)
       elementThat.removeEventListener("click", displayResult)
     } 
+
+    //TODO Ajouter la fonction qui fait un PUT pour mettre un truc dans la BDD
 /*
     function sendVoteToServer(questionObj, voteKey) {
       const voteData = {
