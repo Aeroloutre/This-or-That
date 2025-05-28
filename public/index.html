@@ -77,6 +77,7 @@
     let arraySize;
     let randomInt;
     let numeroDeQuestion;
+    let data;
 
     const content = document.getElementById("content");
     const next = document.getElementById("next");
@@ -99,7 +100,7 @@
     }
 
     (async () => {
-      let data = await fetchQuestions();
+      data = await fetchQuestions();
       console.log(data);
 
       arraySize = data.length - 1;
@@ -140,14 +141,17 @@
       document.getElementById("this").innerHTML = keys[0];
       document.getElementById("that").innerHTML = keys[1];
 
-      elementThis.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
-      elementThat.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
+      elementThis.addEventListener("click", () => displayResult(toDisplayVote1, toDisplayVote2),{once: true}); // TODO Ajouter l'enregistrement du vote
+      elementThat.addEventListener("click", () => displayResult(toDisplayVote1, toDisplayVote2),{once: true}); // TODO Ajouter l'enregistrement du vote
+      
       return (toDisplayVote1, toDisplayVote2);
     }
 
     function displayResult(toDisplayVote1, toDisplayVote2) {
       console.log("displayResult")
 
+      console.log('vote1',toDisplayVote1)
+      console.log('vote2',toDisplayVote2)
       document.getElementById("this").innerHTML = toDisplayVote1
       document.getElementById("that").innerHTML = toDisplayVote2
 
@@ -175,7 +179,7 @@
       document.getElementById("that").innerHTML = "That";
       next.style.display = "none"
 
-      initialisation();
+      initialisation(data);
     }
 
   </script>
