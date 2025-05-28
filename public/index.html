@@ -129,21 +129,23 @@
       numeroDeQuestion = getRandomInt(0, arraySize);
       console.log(numeroDeQuestion)
 
-      const localKeys = Object.keys(data[numeroDeQuestion]);
+      let keys = Object.keys(data[numeroDeQuestion]);
+      let values = Object.values(data[numeroDeQuestion]);
 
-      let toDisplayVote1 = data[numeroDeQuestion][0];
-      console.log('vote1',toDisplayVote1);
-      let toDisplayVote2 = data[numeroDeQuestion][1];
-      console.log('vote2',toDisplayVote2);
+      let toDisplayVote1 = values[0];
+      console.log('nombre de vote1',toDisplayVote1);
+      let toDisplayVote2 = values[1];
+      console.log('nombre de vote2',toDisplayVote2);
 
-      document.getElementById("this").innerHTML = data[numeroDeQuestion][0];
-      document.getElementById("that").innerHTML = data[numeroDeQuestion][1];
+      document.getElementById("this").innerHTML = keys[0];
+      document.getElementById("that").innerHTML = keys[1];
 
       elementThis.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
       elementThat.addEventListener("click", displayResult,{once: true}); // TODO Ajouter l'enregistrement du vote
+      return (toDisplayVote1, toDisplayVote2);
     }
 
-    function displayResult() {
+    function displayResult(toDisplayVote1, toDisplayVote2) {
       console.log("displayResult")
 
       document.getElementById("this").innerHTML = toDisplayVote1
@@ -156,7 +158,7 @@
     } 
 
     //TODO Ajouter la fonction qui fait un PUT pour mettre un truc dans la BDD
-/*
+    /*
     function sendVoteToServer(questionObj, voteKey) {
       const voteData = {
         question: [questionObj.Question1, questionObj.Question2],
