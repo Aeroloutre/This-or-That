@@ -89,6 +89,7 @@
     content.style.display = "none";
     next.style.display = "none";
 
+    //C'est une fonction qui GET questions
     async function fetchQuestions() {
       try {
         const response = await fetch('/questions');
@@ -99,6 +100,25 @@
       }
     }
 
+    //C'est une fonction qui PUT question
+    async function updateQuestion(index, updatedFields) {
+      try {
+        const response = await fetch(`/questions/${index}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedFields) // Exemple : { question: "Nouvelle question", reponse: "42" }
+        });
+
+        const result = await response.json();
+        console.log('Mise à jour réussie :', result);
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour de la question', error);
+      }
+    }
+
+    //Appel de la fonction qui fait le GET
     (async () => {
       data = await fetchQuestions();
       console.log(data);
@@ -128,23 +148,29 @@
       elementStart.style.display = "none";
 
       numeroDeQuestion = getRandomInt(0, arraySize);
-      console.log(numeroDeQuestion)
+      console.log('Numéro de la question :', numeroDeQuestion)
 
-      let keys = Object.keys(data[numeroDeQuestion]);
-      let values = Object.values(data[numeroDeQuestion]);
-
-      let toDisplayVote1 = values[0];
-      console.log('nombre de vote1',toDisplayVote1);
-      let toDisplayVote2 = values[1];
-      console.log('nombre de vote2',toDisplayVote2);
+      const question = data[numeroDeQuestion];
+      const keys = Object.keys(question);
+      const values = Object.values(question);
 
       document.getElementById("this").innerHTML = keys[0];
       document.getElementById("that").innerHTML = keys[1];
 
-      elementThis.addEventListener("click", () => displayResult(toDisplayVote1, toDisplayVote2),{once: true}); // TODO Ajouter l'enregistrement du vote
-      elementThat.addEventListener("click", () => displayResult(toDisplayVote1, toDisplayVote2),{once: true}); // TODO Ajouter l'enregistrement du vote
-      
-      return (toDisplayVote1, toDisplayVote2);
+      let newVote1 = values[0] + 1;
+      let newVote2 = values[1] + 1;
+
+       elementThis.addEventListener("click", async () => {
+          displayResult(newVote1, values[1]); // on affiche le résultat
+          await updateQuestion(numeroDeQuestion, { [keys[0]]: newVote1 }); // on PUT
+        }, { once: true });
+
+        elementThat.addEventListener("click", async () => {
+          displayResult(values[0], newVote2); // on affiche
+          await updateQuestion(numeroDeQuestion, { [keys[1]]: newVote2 }); // on PUT
+        }, { once: true });
+
+      return (newVote1, newVote2);
     }
 
     function displayResult(toDisplayVote1, toDisplayVote2) {
@@ -159,19 +185,7 @@
 
       elementThis.removeEventListener("click", displayResult)
       elementThat.removeEventListener("click", displayResult)
-    } 
-
-    //TODO Ajouter la fonction qui fait un PUT pour mettre un truc dans la BDD
-    /*
-    function sendVoteToServer(questionObj, voteKey) {
-      const voteData = {
-        question: [questionObj.Question1, questionObj.Question2],
-        vote: voteKey,
-        timestamp: new Date().toISOString()
-      };
-      
     }
-    */
 
     function nextButton() {
       console.log("next button")
