@@ -1,3 +1,4 @@
+const { log } = require('console');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -34,8 +35,10 @@ router.put('/questions/:index', (req, res) => {
       return res.status(400).json({ error: 'Index de question invalide' });
     }
 
+    console.log(questions[questionIndex]);
     // Met à jour uniquement les champs spécifiés
     questions[questionIndex] = { ...questions[questionIndex], ...updatedFields };
+    console.log(questions[questionIndex]);
 
     fs.writeFile(FILE_PATH, JSON.stringify(questions, null, 2), (err) => {
       if (err) return res.status(500).json({ error: 'Erreur d\'écriture du fichier JSON' });
