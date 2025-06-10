@@ -1,51 +1,34 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import { db } from './db.js';
 
 const router = express.Router();
 
-const FILE_PATH = './question.json' //path.join(__dirname, 'questions.json');
-
-if (!fs.existsSync(FILE_PATH)) {
-  fs.writeFileSync(FILE_PATH, JSON.stringify([]));
-}
-
 // Route GET /questions
 router.get('/questions', (req, res) => {
-  fs.readFile(FILE_PATH, 'utf8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: 'Erreur de lecture du fichier JSON' });
-    }
-    res.json(JSON.parse(data));
-  });
+  res.json(db.data);
 });
 
 // Route PUT /questions pour mettre à jour une question par index
-router.put('/questions/:index', (req, res) => {
+router.put('/questions/:index/value1', (req, res) => {
   const questionIndex = parseInt(req.params.index);
-  const updatedFields = req.body; // { question: "nouvelle question", ... }
 
-  fs.readFile(FILE_PATH, 'utf8', (err, data) => {
-    if (err) return res.status(500).json({ error: 'Erreur de lecture du fichier JSON' });
+  db.data.questions[questionIndex].value1++;
 
-    let questions = JSON.parse(data);
+  res.status(200).send();
 
-    //est-ce que l'index de la question existe ?
-    if (questionIndex < 0 || questionIndex >= questions.length) {
-      return res.status(400).json({ error: 'Index de question invalide' });
-    }
-
-    console.log(questions[questionIndex]);
-    // Met à jour uniquement les champs spécifiés
-    questions[questionIndex] = { ...questions[questionIndex], ...updatedFields };
-    console.log(questions[questionIndex]);
-
-    fs.writeFile(FILE_PATH, JSON.stringify(questions, null, 2), (err) => {
-      if (err) return res.status(500).json({ error: 'Erreur d\'écriture du fichier JSON' });
-
-      res.json({ message: 'Question mise à jour avec succès', updated: questions[questionIndex] });
-    });
-  });
+  db.write();
 });
 
-export default router;
+router.put('/questions/:index/value2', (req, res) => {
+  const questionIndex = parseInt(req.params.index);
+
+  db.data.questions[questionIndex].value2++;
+
+  res.status(200).send();
+
+  db.write();
+});
+
+export { router };

@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import questionsRoutes from './questionsRoutes.js';
+import { router } from './questionsRoutes.js';
 import { JSONFilePreset } from 'lowdb/node';
 
 const app = express();
@@ -19,4 +19,4 @@ app.listen(PORT, () => {
 ////////////////////////////////////
 
 // Utilise les routes du backend
-app.use('/', questionsRoutes);
+app.use('/', router);
