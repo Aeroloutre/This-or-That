@@ -1,10 +1,10 @@
-const { log } = require('console');
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+
 const router = express.Router();
 
-const FILE_PATH = path.join(__dirname, 'questions.json');
+const FILE_PATH = './question.json' //path.join(__dirname, 'questions.json');
 
 if (!fs.existsSync(FILE_PATH)) {
   fs.writeFileSync(FILE_PATH, JSON.stringify([]));
@@ -48,4 +48,4 @@ router.put('/questions/:index', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

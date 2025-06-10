@@ -1,7 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const questionsRoutes = require('./questionsRoutes'); // 🔁 import des routes
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import questionsRoutes from './questionsRoutes.js';
+import { JSONFilePreset } from 'lowdb/node';
 
 const app = express();
 app.use(cors());
