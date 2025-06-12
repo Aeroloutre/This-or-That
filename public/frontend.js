@@ -44,13 +44,12 @@ async function updateQuestion(index, updatedFields) {
 
 //Appel de la fonction qui fait le GET
 (async () => {
-  data = await fetchQuestions();
-  console.log(data);
+  data = (await fetchQuestions()).questions;
 
   arraySize = data.length - 1;
 
   console.log('taille de la liste =', arraySize);
-  console.log('data =', data);
+  console.log('Les data qui sont get =', data);
   console.log('data[0] =', data[0]);
   console.log('data[1] =', data[1]);
 
@@ -75,16 +74,14 @@ function initialisation(data){
   console.log('Numéro de la question :', numeroDeQuestion)
 
   const question = data[numeroDeQuestion];
-  const keys = Object.keys(question);
-  const values = Object.values(question);
 
-  document.getElementById("this").innerHTML = keys[0];
-  document.getElementById("that").innerHTML = keys[1];
-
-  let newVote1 = values[0] + 1;
-  let newVote2 = values[1] + 1;
+  document.getElementById("this").innerHTML = question.key1;
+  document.getElementById("that").innerHTML = question.key2;
 
     elementThis.addEventListener("click", async () => {
+      const response = await fetch(`/questions/${numeroDeQuestion}/value1`, {method: "PUT"});
+      const data = await response.json();
+      console.log("data après le PUT", data);
       displayResult(newVote1, values[1]); // on affiche le résultat
       await updateQuestion(numeroDeQuestion, { [keys[0]]: newVote1 }); // on PUT
     }, { once: true });

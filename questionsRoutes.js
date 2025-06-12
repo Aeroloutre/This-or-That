@@ -14,9 +14,11 @@ router.get('/questions', (req, res) => {
 router.put('/questions/:index/value1', (req, res) => {
   const questionIndex = parseInt(req.params.index);
 
+  console.log(db.data.questions, questionIndex);
+
   db.data.questions[questionIndex].value1++;
 
-  res.status(200).send();
+  res.json(db.data.questions[questionIndex]);
 
   db.write();
 });
@@ -26,7 +28,7 @@ router.put('/questions/:index/value2', (req, res) => {
 
   db.data.questions[questionIndex].value2++;
 
-  res.status(200).send();
+  res.json(db.data.questions[questionIndex]);
 
   db.write();
 });
