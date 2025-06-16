@@ -56,22 +56,24 @@ async function updateQuestion(index, updatedFields) {
 })();
 
 elementNext.addEventListener("click", nextButton);
-elementStart.addEventListener("click", initialisation);
+elementStart.addEventListener("click", startDisplay);
     
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function initialisation(data){
-  console.log("initialisation")
-
+function startDisplay(){
   content.style.display = "block";
   elementStart.style.display = "none";
+}
+
+function initialisation(data){
+  console.log("initialisation")
 
   numeroDeQuestion = getRandomInt(0, arraySize);
   console.log('Numéro de la question :', numeroDeQuestion)
 
-  const question = data[numeroDeQuestion];
+  let question = data[numeroDeQuestion];
 
   document.getElementById("this").innerHTML = question.key1;
   document.getElementById("that").innerHTML = question.key2;
@@ -80,17 +82,18 @@ function initialisation(data){
       const response = await fetch(`/questions/${numeroDeQuestion}/value1`, {method: "PUT"});
       const data = await response.json();
       console.log("data après le PUT", data);
-      displayResult(question);
+      displayResult(data);
+      question = data;
     }, { once: true });
 
     elementThat.addEventListener("click", async () => {
       const response = await fetch(`/questions/${numeroDeQuestion}/value2`, {method: "PUT"});
       const data = await response.json();
       console.log("data après le PUT", data);
-      displayResult(question); 
+      displayResult(data); 
+      question = data;
     }, { once: true });
 
-    // faut que je fasse la partie ou je write la db mdrr
   return (numeroDeQuestion, question);
 }
 
@@ -103,8 +106,8 @@ function displayResult(question, numeroDeQuestion) {
 
   next.style.display = "block";
 
-  elementThis.removeEventListener("click", displayResult)
-  elementThat.removeEventListener("click", displayResult)
+  elementThis.removeEventListener("click", displayResult);
+  elementThat.removeEventListener("click", displayResult);
 }
 
 function nextButton() {
