@@ -50,11 +50,9 @@ async function updateQuestion(index, updatedFields) {
 
   console.log('taille de la liste =', arraySize);
   console.log('Les data qui sont get =', data);
-  console.log('data[0] =', data[0]);
-  console.log('data[1] =', data[1]);
-
-  initialisation(data)
-
+  initialisation(data, numeroDeQuestion);
+  console.log('clef 1 =', data[numeroDeQuestion].key1);
+  console.log('valeur de la clef 1 =', data[numeroDeQuestion].value1);
 })();
 
 elementNext.addEventListener("click", nextButton);
@@ -82,25 +80,26 @@ function initialisation(data){
       const response = await fetch(`/questions/${numeroDeQuestion}/value1`, {method: "PUT"});
       const data = await response.json();
       console.log("data après le PUT", data);
-      displayResult(newVote1, values[1]); // on affiche le résultat
-      await updateQuestion(numeroDeQuestion, { [keys[0]]: newVote1 }); // on PUT
+      displayResult(question);
     }, { once: true });
 
     elementThat.addEventListener("click", async () => {
-      displayResult(values[0], newVote2); // on affiche
-      await updateQuestion(numeroDeQuestion, { [keys[1]]: newVote2 }); // on PUT
+      const response = await fetch(`/questions/${numeroDeQuestion}/value2`, {method: "PUT"});
+      const data = await response.json();
+      console.log("data après le PUT", data);
+      displayResult(question); 
     }, { once: true });
 
-  return (newVote1, newVote2);
+    // faut que je fasse la partie ou je write la db mdrr
+  return (numeroDeQuestion, question);
 }
 
-function displayResult(toDisplayVote1, toDisplayVote2) {
+function displayResult(question, numeroDeQuestion) {
   console.log("displayResult")
-
-  console.log('vote1',toDisplayVote1)
-  console.log('vote2',toDisplayVote2)
-  document.getElementById("this").innerHTML = toDisplayVote1
-  document.getElementById("that").innerHTML = toDisplayVote2
+  console.log('vote1', question.value1);
+  console.log('vote2', question.value2);
+  document.getElementById("this").innerHTML = question.value1;
+  document.getElementById("that").innerHTML = question.value2;
 
   next.style.display = "block";
 
