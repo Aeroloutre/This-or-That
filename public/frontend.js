@@ -45,14 +45,8 @@ async function updateQuestion(index, updatedFields) {
 //Appel de la fonction qui fait le GET
 (async () => {
   data = (await fetchQuestions()).questions;
-
   arraySize = data.length - 1;
-
-  console.log('taille de la liste =', arraySize);
-  console.log('Les data qui sont get =', data);
   initialisation(data, numeroDeQuestion);
-  console.log('clef 1 =', data[numeroDeQuestion].key1);
-  console.log('valeur de la clef 1 =', data[numeroDeQuestion].value1);
 })();
 
 elementNext.addEventListener("click", nextButton);
@@ -68,10 +62,8 @@ function startDisplay(){
 }
 
 function initialisation(data){
-  console.log("initialisation")
 
   numeroDeQuestion = getRandomInt(0, arraySize);
-  console.log('Numéro de la question :', numeroDeQuestion)
 
   let question = data[numeroDeQuestion];
 
@@ -98,9 +90,6 @@ function initialisation(data){
 }
 
 function displayResult(question, numeroDeQuestion) {
-  console.log("displayResult")
-  console.log('vote1', question.value1);
-  console.log('vote2', question.value2);
   document.getElementById("this").innerHTML = question.value1;
   document.getElementById("that").innerHTML = question.value2;
 
