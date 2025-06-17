@@ -70,24 +70,28 @@ function initialisation(data){
   document.getElementById("this").innerHTML = question.key1;
   document.getElementById("that").innerHTML = question.key2;
 
-    elementThis.addEventListener("click", async () => {
-      const response = await fetch(`/questions/${numeroDeQuestion}/value1`, {method: "PUT"});
-      const data = await response.json();
-      console.log("data après le PUT", data);
-      displayResult(data);
-      question = data;
-    }, { once: true });
+  elementThis.addEventListener("click", onClickVal1, { once: true });
 
-    elementThat.addEventListener("click", async () => {
+  elementThat.addEventListener("click", onClickVal2, { once: true });
+
+  return (numeroDeQuestion, question);
+}
+
+async function onClickVal2 () {
       const response = await fetch(`/questions/${numeroDeQuestion}/value2`, {method: "PUT"});
       const data = await response.json();
       console.log("data après le PUT", data);
       displayResult(data); 
       question = data;
-    }, { once: true });
+    }
 
-  return (numeroDeQuestion, question);
-}
+async function onClickVal1 () {
+      const response = await fetch(`/questions/${numeroDeQuestion}/value1`, {method: "PUT"});
+      const data = await response.json();
+      console.log("data après le PUT", data);
+      displayResult(data);
+      question = data;
+    }   
 
 function displayResult(question, numeroDeQuestion) {
   document.getElementById("this").innerHTML = question.value1;
@@ -95,8 +99,8 @@ function displayResult(question, numeroDeQuestion) {
 
   next.style.display = "block";
 
-  elementThis.removeEventListener("click", displayResult);
-  elementThat.removeEventListener("click", displayResult);
+  elementThis.removeEventListener("click", onClickVal1);
+  elementThat.removeEventListener("click", onClickVal2);
 }
 
 function nextButton() {
