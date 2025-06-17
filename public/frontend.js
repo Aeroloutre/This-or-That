@@ -72,8 +72,8 @@ async function onClickVal1 () {
 }
 
 function displayResult (question) {
-  document.getElementById('this').innerHTML = question.value1
-  document.getElementById('that').innerHTML = question.value2
+  document.getElementById('this').innerHTML = Math.round(((question.value1/(question.value1+question.value2))*100)*10)/10 + ' %'
+  document.getElementById('that').innerHTML = Math.round(((question.value2/(question.value2+question.value1))*100)*10)/10 + ' %'
 
   next.style.display = 'block'
 
