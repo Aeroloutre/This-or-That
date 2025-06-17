@@ -1,5 +1,4 @@
 let arraySize
-let randomInt
 let numeroDeQuestion
 let data
 
@@ -21,24 +20,6 @@ async function fetchQuestions () {
     return data
   } catch (error) {
     console.error('Erreur lors de la récupération des questions', error)
-  }
-}
-
-// C'est une fonction qui PUT question
-async function updateQuestion (index, updatedFields) {
-  try {
-    const response = await fetch(`/questions/${index}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedFields) // Exemple : { question: "Nouvelle question", reponse: "42" }
-    })
-
-    const result = await response.json()
-    console.log('Mise à jour réussie :', result)
-  } catch (error) {
-    console.error('Erreur lors de la mise à jour de la question', error)
   }
 }
 
@@ -81,7 +62,6 @@ async function onClickVal2 () {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  question = data
 }
 
 async function onClickVal1 () {
@@ -89,10 +69,9 @@ async function onClickVal1 () {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  question = data
 }
 
-function displayResult (question, numeroDeQuestion) {
+function displayResult (question) {
   document.getElementById('this').innerHTML = question.value1
   document.getElementById('that').innerHTML = question.value2
 
