@@ -24,11 +24,23 @@ router.put('/questions/:index/value1', (req, res) => {
 router.put('/questions/:index/value2', (req, res) => {
   const questionIndex = parseInt(req.params.index)
 
+  console.log(db.data.questions, questionIndex)
+
   db.data.questions[questionIndex].value2++
 
   res.json(db.data.questions[questionIndex])
 
   db.write()
+})
+
+router.post('/questions', (req, res) => {
+  const question = req.body.question
+
+  db.data.questions.push(question)
+
+  await db.write()
+
+  res.json(question)
 })
 
 export { router }

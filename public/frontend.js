@@ -89,3 +89,21 @@ function nextButton () {
 
   initialisation(data)
 }
+
+async function onClickQuestionFormSubmission () {
+  const Question1 = document.getElementById("Question1").value
+  const Question2 = document.getElementById("Question2").value
+  const response = await fetch(`/questions`, {
+          method: 'POST',
+          body: {
+            "question": {
+              "key1": Question1,//La première question
+              "value1": "0",
+              "key2": Question2, //La deuxième question
+              "value2": "0"
+            }
+          },
+        });
+  console.log('La question POST', response)
+}
+
