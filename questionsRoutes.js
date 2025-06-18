@@ -38,7 +38,7 @@ router.post('/questions', (req, res) => {
 
   db.data.questions.push(question)
 
-  await db.write()
+  db.write()
 
   res.json(question)
 })

@@ -95,14 +95,17 @@ async function onClickQuestionFormSubmission () {
   const Question2 = document.getElementById("Question2").value
   const response = await fetch(`/questions`, {
           method: 'POST',
-          body: {
+          headers: {
+            'Content-Type': 'application/json' // pour que req.body fonctionne
+          },
+          body: JSON.stringify({
             "question": {
               "key1": Question1,//La première question
-              "value1": "0",
+              "value1": 0,
               "key2": Question2, //La deuxième question
-              "value2": "0"
+              "value2": 0
             }
-          },
+          }),
         });
   console.log('La question POST', response)
 }

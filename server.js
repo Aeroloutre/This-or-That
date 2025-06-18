@@ -5,7 +5,7 @@ import { router } from './questionsRoutes.js'
 
 const app = express()
 app.use(cors())
-app.use(bodyParser.json())
+app.use(express.json())
 
 // 👇 Ceci sert le fichier index.html quand tu vas sur "/"
 app.use(express.static('public'))
