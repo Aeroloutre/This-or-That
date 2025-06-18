@@ -2,6 +2,7 @@ let arraySize
 let numeroDeQuestion
 let data
 
+const bannedIndex = []
 const content = document.getElementById('content')
 const next = document.getElementById('next')
 const elementStart = document.getElementById('start')
@@ -42,8 +43,19 @@ function startDisplay () {
   elementStart.style.display = 'none'
 }
 
+function getRandomIntExcluding(min, max, excluded) {
+  let rand;
+  do {
+    rand = Math.floor(Math.random() * (max - min)) + min;
+  } while (excluded.includes(rand));
+  return rand;
+}
+
+/// il faut que tu regarde parce que t'arrives pas à tirer la toute dernière question la mon chef.
+
 function initialisation (data) {
-  numeroDeQuestion = getRandomInt(0, arraySize)
+  numeroDeQuestion = getRandomIntExcluding(0, arraySize, bannedIndex);
+  console.log('Numéro de Question', numeroDeQuestion)
 
   const question = data[numeroDeQuestion]
 
@@ -62,6 +74,8 @@ async function onClickVal2 () {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
+  bannedIndex.push(numeroDeQuestion)
+  console.log('index bannis', bannedIndex)
 }
 
 async function onClickVal1 () {
@@ -69,6 +83,8 @@ async function onClickVal1 () {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
+  bannedIndex.push(numeroDeQuestion)
+  console.log('index bannis', bannedIndex)
 }
 
 function displayResult (question) {

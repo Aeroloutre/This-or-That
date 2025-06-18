@@ -2,15 +2,21 @@
   "questions": [
     {
       "key1": "pablo",
-      "value1": 51,
+      "value1": 56,
       "key2": "vic",
       "value2": 53
     },
     {
       "key1": "Viande haché",
-      "value1": 44,
+      "value1": 48,
       "key2": "poulet",
-      "value2": 55
+      "value2": 57
+    },
+    {
+      "key1": "Hahahaha",
+      "value1": 5,
+      "key2": "Hihihihih",
+      "value2": 0
     }
   ]
 }
