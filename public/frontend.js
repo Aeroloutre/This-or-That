@@ -1,4 +1,3 @@
-let arraySize
 let numeroDeQuestion
 let data
 
@@ -27,16 +26,11 @@ async function fetchQuestions () {
 // Appel de la fonction qui fait le GET
 (async () => {
   data = (await fetchQuestions()).questions
-  arraySize = data.length - 1
   initialisation(data, numeroDeQuestion)
 })()
 
 elementNext.addEventListener('click', nextButton)
 elementStart.addEventListener('click', startDisplay)
-
-function getRandomInt (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
 
 function startDisplay () {
   content.style.display = 'block'
@@ -47,14 +41,21 @@ function getRandomIntExcluding(min, max, excluded) {
   let rand;
   do {
     rand = Math.floor(Math.random() * (max - min)) + min;
+    console.log('HA');
   } while (excluded.includes(rand));
-  return rand;
+  return rand
 }
 
-/// il faut que tu regarde parce que t'arrives pas à tirer la toute dernière question la mon chef.
-
 function initialisation (data) {
-  numeroDeQuestion = getRandomIntExcluding(0, arraySize, bannedIndex);
+
+  if (data.length === bannedIndex.length){
+    location.href = "/index2.html";
+    console.log('Ho');
+    return
+  }
+
+  numeroDeQuestion = getRandomIntExcluding(0, data.length, bannedIndex);
+
   console.log('Numéro de Question', numeroDeQuestion)
 
   const question = data[numeroDeQuestion]
