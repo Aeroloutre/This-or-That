@@ -15,9 +15,8 @@ router.get('/questions', async (req, res) => {
 // Route PUT /questions pour mettre à jour une question par index
 router.put('/questions/:id/firstchoicecount', async (req, res) => {
   const questionIndex = parseInt(req.params.id)
-  const questionCount = await prisma.questions.questionIndex()
+  const questionCount = await prisma.questions.findUnique({where :{id:questionIndex}})
   const firstchoicecount = questionCount + 1
-
   const updatedQuestion = await prisma.questions.update({
       where: { id: questionIndex },
       data: { firstchoicecount }
@@ -28,16 +27,14 @@ router.put('/questions/:id/firstchoicecount', async (req, res) => {
 
 router.put('/questions/:id/secondchoicecount', async (req, res) => {
   const questionIndex = parseInt(req.params.id)
-  const questionCount = await prisma.questions.questionIndex()
+  const questionCount = await prisma.questions.findUnique({where :{id:questionIndex}})
   const secondchoicecount = questionCount + 1
-
   const updatedQuestion = await prisma.questions.update({
       where: { id: questionIndex },
       data: { secondchoicecount }
   })
 
   res.json(updatedQuestion)
-
 })
 
 router.post('/questions', (req, res) => {
