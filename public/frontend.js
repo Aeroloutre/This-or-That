@@ -17,6 +17,7 @@ async function fetchQuestions () {
   try {
     const response = await fetch('/questions')
     const data = await response.json()
+    console.log('data :',data)
     return data
   } catch (error) {
     console.error('Erreur lors de la récupération des questions', error)
@@ -25,7 +26,7 @@ async function fetchQuestions () {
 
 // Appel de la fonction qui fait le GET
 (async () => {
-  data = (await fetchQuestions()).questions
+  data = (await fetchQuestions())
   initialisation(data, numeroDeQuestion)
 })()
 
@@ -41,7 +42,6 @@ function getRandomIntExcluding(min, max, excluded) {
   let rand;
   do {
     rand = Math.floor(Math.random() * (max - min)) + min;
-    console.log('HA');
   } while (excluded.includes(rand));
   return rand
 }
@@ -60,8 +60,8 @@ function initialisation (data) {
 
   const question = data[numeroDeQuestion]
 
-  document.getElementById('this').innerHTML = question.key1
-  document.getElementById('that').innerHTML = question.key2
+  document.getElementById('this').innerHTML = question.firstchoice
+  document.getElementById('that').innerHTML = question.secondchoice
 
   elementThis.addEventListener('click', onClickVal1, { once: true })
 
@@ -71,7 +71,7 @@ function initialisation (data) {
 }
 
 async function onClickVal2 () {
-  const response = await fetch(`/questions/${numeroDeQuestion}/value2`, { method: 'PUT' })
+  const response = await fetch(`/questions/${numeroDeQuestion}/firstchoicecount`, { method: 'PUT' })
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
@@ -80,7 +80,7 @@ async function onClickVal2 () {
 }
 
 async function onClickVal1 () {
-  const response = await fetch(`/questions/${numeroDeQuestion}/value1`, { method: 'PUT' })
+  const response = await fetch(`/questions/${numeroDeQuestion}/secondchoicecount`, { method: 'PUT' })
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
