@@ -1,36 +1,43 @@
 import express from 'express'
-import { db } from './db.js'
+
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 const router = express.Router()
 
 // Route GET /questions
-router.get('/questions', (req, res) => {
-  res.json(db.data)
+router.get('/questions', async (req, res) => {
+  const questions = await prisma.questions.findMany()
+  res.json(questions)
 })
 
 // Route PUT /questions pour mettre à jour une question par index
-router.put('/questions/:index/value1', (req, res) => {
-  const questionIndex = parseInt(req.params.index)
+router.put('/questions/:id/firstchoicecount', async (req, res) => {
+  const questionIndex = parseInt(req.params.id)
+  const questionCount = await prisma.questions.questionIndex()
+  const firstchoicecount = questionCount + 1
 
-  console.log(db.data.questions, questionIndex)
+  const updatedQuestion = await prisma.questions.update({
+      where: { id: questionIndex },
+      data: { firstchoicecount }
+  })
 
-  db.data.questions[questionIndex].value1++
-
-  res.json(db.data.questions[questionIndex])
-
-  db.write()
+  res.json(updatedQuestion)
 })
 
-router.put('/questions/:index/value2', (req, res) => {
-  const questionIndex = parseInt(req.params.index)
+router.put('/questions/:id/secondchoicecount', async (req, res) => {
+  const questionIndex = parseInt(req.params.id)
+  const questionCount = await prisma.questions.questionIndex()
+  const secondchoicecount = questionCount + 1
 
-  console.log(db.data.questions, questionIndex)
+  const updatedQuestion = await prisma.questions.update({
+      where: { id: questionIndex },
+      data: { secondchoicecount }
+  })
 
-  db.data.questions[questionIndex].value2++
+  res.json(updatedQuestion)
 
-  res.json(db.data.questions[questionIndex])
-
-  db.write()
 })
 
 router.post('/questions', (req, res) => {

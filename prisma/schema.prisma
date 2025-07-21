@@ -8,7 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model questions {
   id                Int  @id @unique
   firstchoice       String @db.VarChar(255)
@@ -17,7 +16,6 @@ model questions {
   secondchoicecount String @db.VarChar(255)
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model users {
   name String @db.VarChar(30)
   id   Int @id @unique
