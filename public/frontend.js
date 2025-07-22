@@ -58,10 +58,10 @@ function initialisation (data) {
 
   console.log('Numéro de Question', numeroDeQuestion)
 
-  const question = data[numeroDeQuestion]
+  const question = data.find(question => question.id === numeroDeQuestion)
 
-  document.getElementById('this').innerHTML = question.firstchoice
-  document.getElementById('that').innerHTML = question.secondchoice
+  document.getElementById('this').innerHTML = question.secondchoice
+  document.getElementById('that').innerHTML = question.firstchoice
 
   elementThis.addEventListener('click', onClickVal1, { once: true })
 
@@ -71,6 +71,7 @@ function initialisation (data) {
 }
 
 async function onClickVal2 () {
+  console.log(numeroDeQuestion)
   const response = await fetch(`/questions/${numeroDeQuestion}/firstchoicecount`, { method: 'PUT' })
   const data = await response.json()
   console.log('data après le PUT', data)
@@ -80,6 +81,7 @@ async function onClickVal2 () {
 }
 
 async function onClickVal1 () {
+  console.log(numeroDeQuestion)
   const response = await fetch(`/questions/${numeroDeQuestion}/secondchoicecount`, { method: 'PUT' })
   const data = await response.json()
   console.log('data après le PUT', data)
