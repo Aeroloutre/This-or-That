@@ -110,8 +110,8 @@ function nextButton () {
 }
 
 async function onClickQuestionFormSubmission () {
-  const Question1 = document.getElementById("Question1").value
-  const Question2 = document.getElementById("Question2").value
+  const Choix1 = document.getElementById("Question1").value
+  const Choix2 = document.getElementById("Question2").value
   const response = await fetch(`/questions`, {
           method: 'POST',
           headers: {
@@ -119,10 +119,10 @@ async function onClickQuestionFormSubmission () {
           },
           body: JSON.stringify({
             "question": {
-              "key1": Question1,//La première question
-              "value1": 0,
-              "key2": Question2, //La deuxième question
-              "value2": 0
+              "firstchoice": "Question1",
+              "firstchoicecount": 0,
+              "secondchoice": "Question2",
+              "secondchoicecount": 0
             }
           }),
         });
