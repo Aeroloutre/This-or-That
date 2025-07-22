@@ -60,8 +60,8 @@ function initialisation (data) {
 
   const question = data.find(question => question.id === numeroDeQuestion)
 
-  document.getElementById('this').innerHTML = question.secondchoice
-  document.getElementById('that').innerHTML = question.firstchoice
+  document.getElementById('this').innerHTML = question.firstchoice
+  document.getElementById('that').innerHTML = question.secondchoice
 
   elementThis.addEventListener('click', onClickVal1, { once: true })
 
@@ -70,7 +70,7 @@ function initialisation (data) {
   return (numeroDeQuestion, question)
 }
 
-async function onClickVal2 () {
+async function onClickVal1 () {
   console.log(numeroDeQuestion)
   const response = await fetch(`/questions/${numeroDeQuestion}/firstchoicecount`, { method: 'PUT' })
   const data = await response.json()
@@ -80,7 +80,7 @@ async function onClickVal2 () {
   console.log('index bannis', bannedIndex)
 }
 
-async function onClickVal1 () {
+async function onClickVal2 () {
   console.log(numeroDeQuestion)
   const response = await fetch(`/questions/${numeroDeQuestion}/secondchoicecount`, { method: 'PUT' })
   const data = await response.json()
@@ -91,8 +91,8 @@ async function onClickVal1 () {
 }
 
 function displayResult (question) {
-  document.getElementById('this').innerHTML = Math.round(((question.value1/(question.value1+question.value2))*100)*10)/10 + ' %'
-  document.getElementById('that').innerHTML = Math.round(((question.value2/(question.value2+question.value1))*100)*10)/10 + ' %'
+  document.getElementById('this').innerHTML = Math.round(((question.firstchoicecount/(question.firstchoicecount+question.secondchoicecount))*100)*10)/10 + ' %'
+  document.getElementById('that').innerHTML = Math.round(((question.secondchoicecount/(question.secondchoicecount+question.firstchoicecount))*100)*10)/10 + ' %'
 
   next.style.display = 'block'
 
