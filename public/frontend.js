@@ -58,7 +58,7 @@ function initialisation (data) {
 
   console.log('Numéro de Question', numeroDeQuestion)
 
-  const question = data.find(question => question.id === numeroDeQuestion)
+  const question = data[numeroDeQuestion]
 
   document.getElementById('this').innerHTML = question.firstchoice
   document.getElementById('that').innerHTML = question.secondchoice
@@ -110,8 +110,9 @@ function nextButton () {
 }
 
 async function onClickQuestionFormSubmission () {
-  const Choix1 = document.getElementById("Question1").value
-  const Choix2 = document.getElementById("Question2").value
+  document.getElementById("formSubmissionButton").disabled = true;
+  const choice1 = document.getElementById("Question1").value
+  const choice2 = document.getElementById("Question2").value
   const response = await fetch(`/questions`, {
           method: 'POST',
           headers: {
@@ -119,13 +120,13 @@ async function onClickQuestionFormSubmission () {
           },
           body: JSON.stringify({
             "question": {
-              "firstchoice": "Question1",
+              "firstchoice": choice1,
               "firstchoicecount": 0,
-              "secondchoice": "Question2",
+              "secondchoice": choice2,
               "secondchoicecount": 0
             }
           }),
         });
-  console.log('La question POST', response)
+  console.log('La question POST', await response.json())
 }
 

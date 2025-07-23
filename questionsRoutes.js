@@ -26,7 +26,6 @@ router.put('/questions/:id/firstchoicecount', async (req, res) => {
     where: { id: questionIndex },
     data: { firstchoicecount: { increment: 1 } }
   })
-
   res.json(updatedQuestion)}
   catch (error) {
     console.error(error.message)
@@ -42,7 +41,6 @@ router.put('/questions/:id/secondchoicecount', async (req, res) => {
     where: { id: questionIndex },
     data: { secondchoicecount: { increment: 1 } }
   })
-
   res.json(updatedQuestion)}
   catch (error) {
     console.error(error.message)
@@ -61,11 +59,11 @@ router.post('/questions',async (req, res) => {
         secondchoicecount: question.secondchoicecount
       }
     })
-    res.json(question)
-  } catch (error) {
-    console.error(error.message)
-    res.sendStatus(500).json({ error: error.message })
-  }
+    res.json(newQuestion)}
+    catch (error) {
+      console.error(error.message)
+      res.sendStatus(500).json({ error: error.message })
+    }
 })
 
 export { router }
