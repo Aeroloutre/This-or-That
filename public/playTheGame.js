@@ -47,21 +47,21 @@ function initialisation (data) {
 
   console.log('Numéro de Question', numeroDeQuestion)
 
-  const question = data[numeroDeQuestion];
+  const question = data[numeroDeQuestion]
 
   console.log('question',question)
   document.getElementById('this').innerHTML = question.firstchoice
   document.getElementById('that').innerHTML = question.secondchoice
 
-  elementThis.addEventListener('click', onClickVal1, { once: true })
-  elementThat.addEventListener('click', onClickVal2, { once: true })
+  elementThis.addEventListener('click', () => onClickVal1(question), { once: true })
+  elementThat.addEventListener('click', () => onClickVal2(question), { once: true })
 
   return (numeroDeQuestion, question)
 }
 
-async function onClickVal1 () {
-  console.log(numeroDeQuestion)
-  const response = await fetch(`/questions/${numeroDeQuestion}/firstchoicecount`, { method: 'PUT' })
+async function onClickVal1 (question) {
+  console.log(question.id)
+  const response = await fetch(`/questions/${question.id}/firstchoicecount`, { method: 'PUT' })
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
@@ -69,9 +69,9 @@ async function onClickVal1 () {
   console.log('index bannis', bannedIndex)
 }
 
-async function onClickVal2 () {
-  console.log(numeroDeQuestion)
-  const response = await fetch(`/questions/${numeroDeQuestion}/secondchoicecount`, { method: 'PUT' })
+async function onClickVal2 (question) {
+  console.log(question.id)
+  const response = await fetch(`/questions/${question.id}/secondchoicecount`, { method: 'PUT' })
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
