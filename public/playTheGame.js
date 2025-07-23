@@ -3,14 +3,9 @@ let data
 
 const bannedIndex = []
 const content = document.getElementById('content')
-const next = document.getElementById('next')
-const elementStart = document.getElementById('start')
 const elementThis = document.getElementById('this')
 const elementThat = document.getElementById('that')
 const elementNext = document.getElementById('next')
-
-content.style.display = 'none'
-next.style.display = 'none'
 
 // C'est une fonction qui GET questions
 async function fetchQuestions () {
@@ -28,15 +23,9 @@ async function fetchQuestions () {
 (async () => {
   data = (await fetchQuestions())
   initialisation(data, numeroDeQuestion)
-})()
+})()  
 
 elementNext.addEventListener('click', nextButton)
-elementStart.addEventListener('click', startDisplay)
-
-function startDisplay () {
-  content.style.display = 'block'
-  elementStart.style.display = 'none'
-}
 
 function getRandomIntExcluding(min, max, excluded) {
   let rand;
@@ -49,7 +38,7 @@ function getRandomIntExcluding(min, max, excluded) {
 function initialisation (data) {
 
   if (data.length === bannedIndex.length){
-    location.href = "/index2.html";
+    location.href = "/submitAQuestion.html";
     console.log('Ho');
     return
   }
@@ -58,13 +47,13 @@ function initialisation (data) {
 
   console.log('Numéro de Question', numeroDeQuestion)
 
-  const question = data[numeroDeQuestion]
+  const question = data[numeroDeQuestion];
 
+  console.log('question',question)
   document.getElementById('this').innerHTML = question.firstchoice
   document.getElementById('that').innerHTML = question.secondchoice
 
   elementThis.addEventListener('click', onClickVal1, { once: true })
-
   elementThat.addEventListener('click', onClickVal2, { once: true })
 
   return (numeroDeQuestion, question)
@@ -108,25 +97,3 @@ function nextButton () {
 
   initialisation(data)
 }
-
-async function onClickQuestionFormSubmission () {
-  document.getElementById("formSubmissionButton").disabled = true;
-  const choice1 = document.getElementById("Question1").value
-  const choice2 = document.getElementById("Question2").value
-  const response = await fetch(`/questions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json' // pour que req.body fonctionne
-          },
-          body: JSON.stringify({
-            "question": {
-              "firstchoice": choice1,
-              "firstchoicecount": 0,
-              "secondchoice": choice2,
-              "secondchoicecount": 0
-            }
-          }),
-        });
-  console.log('La question POST', await response.json())
-}
-

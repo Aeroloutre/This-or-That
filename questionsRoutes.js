@@ -13,7 +13,7 @@ router.get('/questions', async (req, res) => {
   res.json(questions)}
   catch (error) {
     console.error(error.message)
-    res.sendStatus(500).json({ error: error.message })
+    res.status(500).json({ error: error.message })
   }
 })
 
@@ -29,7 +29,7 @@ router.put('/questions/:id/firstchoicecount', async (req, res) => {
   res.json(updatedQuestion)}
   catch (error) {
     console.error(error.message)
-    res.sendStatus(500).json({ error: error.message })
+    res.status(500).json({ error: error.message })
   }
 })
 
@@ -44,7 +44,7 @@ router.put('/questions/:id/secondchoicecount', async (req, res) => {
   res.json(updatedQuestion)}
   catch (error) {
     console.error(error.message)
-    res.sendStatus(500).json({ error: error.message })
+    res.status(500).json({ error: error.message })
   }
 })
 
@@ -62,7 +62,7 @@ router.post('/questions',async (req, res) => {
     res.json(newQuestion)}
     catch (error) {
       console.error(error.message)
-      res.sendStatus(500).json({ error: error.message })
+      res.status(500).json({ error: error.message })
     }
 })
 

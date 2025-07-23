@@ -23,22 +23,49 @@
 
 <body>
 
-
   <h1 class="text-4xl font-bold">
     This or That
   </h1>
 
   <h1 class="text-1xl font-bold">
-    The Game
+    The game
   </h1>
 
-  <div id="start" class="midCentered">
-    <div class="blue-border">
-        <a href="playTheGame.html">Start !</a>
-    </div>
-  </div>
+  <div id="content">
 
-<script type="text/javascript" src="/welcomePage.js"></script>
+    <div class="centered">
+      <button id="this" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        this
+      </button>
+    </div>
+
+    <div class="centered">
+      <h1 class="text-2xl font-bold">
+        OR
+      </h1>
+    </div>
+
+    <div class="centered">
+      <button id="that" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        That
+      </button>
+    </div>
+
+    <div class="centered">
+      <h1 class="text-2xl font-bold">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="next" type="button">
+          NEXT
+        </button>
+      </h1>
+    </div>
+
+    <div class ="centered">
+      <a href="submitAQuestion.html">Submit a question !</a>
+    </div>
+
+  </div>
+  
+<script type="text/javascript" src="/playTheGame.js"></script>
 
 </body>
 
