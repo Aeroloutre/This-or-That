@@ -6,11 +6,29 @@ const prisma = new PrismaClient()
 
 const router = express.Router()
 
+import jwt from 'jsonwebtoken'
+
+import dotenv from 'dotenv'
+dotenv.config();
+
+const SECRET = process.env.SECRET
+
 // Route GET /questions
 router.get('/questions', async (req, res) => {
   try {
   const questions = await prisma.questions.findMany()
   res.json(questions)}
+  catch (error) {
+    console.error(error.message)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Route GET /users
+router.get('/users', async (req, res) => {
+  try {
+  const users = await prisma.users.findMany()
+  res.json(users)}
   catch (error) {
     console.error(error.message)
     res.status(500).json({ error: error.message })
@@ -60,6 +78,39 @@ router.post('/questions',async (req, res) => {
     })
     res.json(newQuestion)}
     catch (error) {
+      console.error(error.message)
+      res.status(500).json({ error: error.message })
+    }
+})
+
+router.post('/users',async (req, res) => {
+  const inputUser = req.body.inputUser
+  
+  try {
+    //On cherche l'email précisé dans la bdd
+    const user = await prisma.users.findUnique({ where: { email: inputUser.email } })
+
+    //si on ne le trouve pas, on répond que le mail est incorrect
+    if (!user) {
+      console.log("Email incorrect");
+      return res.status(401).json({ message: "Email incorrect"})
+    }
+
+    //sinon, on vérifie le mot de passe aussi :
+    if (user.password != inputUser.password) {
+      console.log("Mot de passe incorrect");
+      return res.status(401).json({message: "Mot de passe incorrect"})
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      SECRET,
+      { expiresIn: '1h' }
+    )
+
+    res.json({ token })}
+
+  catch (error) {
       console.error(error.message)
       res.status(500).json({ error: error.message })
     }

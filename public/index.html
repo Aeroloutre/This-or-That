@@ -32,10 +32,22 @@
     The Game
   </h1>
 
-  <div id="start" class="midCentered">
-    <div class="blue-border">
-        <a href="playTheGame.html">Start !</a>
+  <div class="form">
+    <div>
+      <label for="email">Email : </label>
+      <input type="text" name="email" id="email" required />
     </div>
+    <div>
+      <label for="password">Mot de passe : </label>
+      <input type="password" name="password" id="password" required />
+    </div>
+    <div>
+      <button id="formSubmissionButton" onClick="onClickLoginFormSubmission()">submit</button>
+    </div>
+  </div>
+
+  <div id="start" class="midCentered, blue-border">
+        <a href="playTheGame.html">Start !</a>
   </div>
 
 <script type="text/javascript" src="/welcomePage.js"></script>
