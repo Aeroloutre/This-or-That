@@ -1,7 +1,7 @@
-let numeroDeQuestion
+let idDeQuestion
 let data
 
-const bannedIndex = []
+const bannediDs = []
 const content = document.getElementById('content')
 const elementThis = document.getElementById('this')
 const elementThat = document.getElementById('that')
@@ -21,33 +21,36 @@ async function fetchQuestions () {
 
 // Appel de la fonction qui fait le GET
 (async () => {
-  data = (await fetchQuestions())
-  initialisation(data, numeroDeQuestion)
-})()  
+  data = await fetchQuestions()
+  initialisation(data)
+})()
 
 elementNext.addEventListener('click', nextButton)
 
-function getRandomIntExcluding(min, max, excluded) {
-  let rand;
+function getRandomIntExcluding(data, excluded) {
+  let randomId;
+  const allIds = data.map(obj => obj.id);
+  console.log('liste des id', allIds)
   do {
-    rand = Math.floor(Math.random() * (max - min)) + min;
-  } while (excluded.includes(rand));
-  return rand
+  randomId = allIds[Math.floor(Math.random() * allIds.length)];
+  console.log("ID aléatoire :", randomId);
+  } while (excluded.includes(randomId));
+  return randomId
 }
 
 function initialisation (data) {
 
-  if (data.length === bannedIndex.length){
+  if (data.length === bannediDs.length){
     location.href = "/submitAQuestion.html";
     console.log('Ho');
     return
   }
 
-  numeroDeQuestion = getRandomIntExcluding(0, data.length, bannedIndex);
+  idDeQuestion = getRandomIntExcluding(data, bannediDs);
 
-  console.log('Numéro de Question', numeroDeQuestion)
+  console.log('Numéro de Question', idDeQuestion)
 
-  const question = data[numeroDeQuestion]
+  const question = data.find(obj => obj.id === idDeQuestion);
 
   console.log('question',question)
   document.getElementById('this').innerHTML = question.firstchoice
@@ -56,7 +59,7 @@ function initialisation (data) {
   elementThis.addEventListener('click', () => onClickVal1(question), { once: true })
   elementThat.addEventListener('click', () => onClickVal2(question), { once: true })
 
-  return (numeroDeQuestion, question)
+  return (idDeQuestion, question)
 }
 
 async function onClickVal1 (question) {
@@ -65,8 +68,8 @@ async function onClickVal1 (question) {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  bannedIndex.push(numeroDeQuestion)
-  console.log('index bannis', bannedIndex)
+  bannediDs.push(idDeQuestion)
+  console.log('index bannis', bannediDs)
 }
 
 async function onClickVal2 (question) {
@@ -75,8 +78,8 @@ async function onClickVal2 (question) {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  bannedIndex.push(numeroDeQuestion)
-  console.log('index bannis', bannedIndex)
+  bannediDs.push(idDeQuestion)
+  console.log('index bannis', bannediDs)
 }
 
 function displayResult (question) {

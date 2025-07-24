@@ -35,7 +35,6 @@ router.put('/questions/:id/firstchoicecount', async (req, res) => {
 
 router.put('/questions/:id/secondchoicecount', async (req, res) => {
   const questionIndex = parseInt(req.params.id)
-  console.log("index de la question à put", questionIndex)
   try {
   const updatedQuestion = await prisma.questions.update({
     where: { id: questionIndex },
