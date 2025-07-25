@@ -1,11 +1,11 @@
 let users
 
 // C'est une fonction qui GET users -> A supprimer à terme (ne pas afficher la liste des users + password en front)
-async function fetchUsers () {
+async function fetchUsers() {
   try {
     const response = await fetch('/users')
     const users = await response.json()
-    console.log('users :',users)
+    console.log('users :', users)
     return users
   } catch (error) {
     console.error('Erreur lors de la récupération des questions', error)
@@ -13,10 +13,10 @@ async function fetchUsers () {
 }
 
 (async () => {
-    users = await fetchUsers()
+  users = await fetchUsers()
 })()
 
-async function onClickLoginFormSubmission () {
+async function onClickLoginFormSubmission() {
 
   //document.getElementById("formSubmissionButton").disabled = true;
 
@@ -26,17 +26,17 @@ async function onClickLoginFormSubmission () {
   console.log("password saisi :", password);
 
   const response = await fetch(`/users`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json' // pour que req.body fonctionne
-          },
-          body: JSON.stringify({
-            "inputUser": {
-              "email": email,
-              "password": password,
-            }
-          }),
-        });
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json' // pour que req.body fonctionne
+    },
+    body: JSON.stringify({
+      "inputUser": {
+        "email": email,
+        "password": password,
+      }
+    }),
+  });
   if (!response.ok) {
     const errorData = await response.json();
     alert(errorData.message); // Affiche "Mot de passe incorrect" à l'utilisateur

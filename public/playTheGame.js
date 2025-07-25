@@ -8,11 +8,15 @@ const elementThat = document.getElementById('that')
 const elementNext = document.getElementById('next')
 
 // C'est une fonction qui GET questions
-async function fetchQuestions () {
+async function fetchQuestions() {
   try {
-    const response = await fetch('/questions')
+    const response = await fetch('/questions', {
+      headers: {
+        authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
     const data = await response.json()
-    console.log('data :',data)
+    console.log('data :', data)
     return data
   } catch (error) {
     console.error('Erreur lors de la récupération des questions', error)
@@ -32,15 +36,15 @@ function getRandomIntExcluding(data, excluded) {
   const allIds = data.map(obj => obj.id);
   console.log('liste des id', allIds)
   do {
-  randomId = allIds[Math.floor(Math.random() * allIds.length)];
-  console.log("ID aléatoire :", randomId);
+    randomId = allIds[Math.floor(Math.random() * allIds.length)];
+    console.log("ID aléatoire :", randomId);
   } while (excluded.includes(randomId));
   return randomId
 }
 
-function initialisation (data) {
+function initialisation(data) {
 
-  if (data.length === bannediDs.length){
+  if (data.length === bannediDs.length) {
     location.href = "/submitAQuestion.html";
     console.log('Ho');
     return
@@ -52,7 +56,7 @@ function initialisation (data) {
 
   const question = data.find(obj => obj.id === idDeQuestion);
 
-  console.log('question',question)
+  console.log('question', question)
   document.getElementById('this').innerHTML = question.firstchoice
   document.getElementById('that').innerHTML = question.secondchoice
 
@@ -62,9 +66,15 @@ function initialisation (data) {
   return (idDeQuestion, question)
 }
 
-async function onClickVal1 (question) {
+async function onClickVal1(question) {
   console.log(question.id)
-  const response = await fetch(`/questions/${question.id}/firstchoicecount`, { method: 'PUT' })
+  const response = await fetch(`/questions/${question.id}/firstchoicecount`, {
+    method: 'PUT',
+    headers: {
+      authorization: 'Bearer ' + localStorage.getItem('token')
+    }
+  })
+
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
@@ -72,9 +82,14 @@ async function onClickVal1 (question) {
   console.log('index bannis', bannediDs)
 }
 
-async function onClickVal2 (question) {
+async function onClickVal2(question) {
   console.log(question.id)
-  const response = await fetch(`/questions/${question.id}/secondchoicecount`, { method: 'PUT' })
+  const response = await fetch(`/questions/${question.id}/secondchoicecount`, {
+    method: 'PUT',
+    headers: {
+      authorization: 'Bearer ' + localStorage.getItem('token')
+    }
+  })
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
@@ -82,9 +97,9 @@ async function onClickVal2 (question) {
   console.log('index bannis', bannediDs)
 }
 
-function displayResult (question) {
-  document.getElementById('this').innerHTML = Math.round(((question.firstchoicecount/(question.firstchoicecount+question.secondchoicecount))*100)*10)/10 + ' %'
-  document.getElementById('that').innerHTML = Math.round(((question.secondchoicecount/(question.secondchoicecount+question.firstchoicecount))*100)*10)/10 + ' %'
+function displayResult(question) {
+  document.getElementById('this').innerHTML = Math.round(((question.firstchoicecount / (question.firstchoicecount + question.secondchoicecount)) * 100) * 10) / 10 + ' %'
+  document.getElementById('that').innerHTML = Math.round(((question.secondchoicecount / (question.secondchoicecount + question.firstchoicecount)) * 100) * 10) / 10 + ' %'
 
   next.style.display = 'block'
 
@@ -92,7 +107,7 @@ function displayResult (question) {
   elementThat.removeEventListener('click', onClickVal2)
 }
 
-function nextButton () {
+function nextButton() {
   console.log('next button')
   document.getElementById('this').innerHTML = 'This'
   document.getElementById('that').innerHTML = 'That'
