@@ -1,7 +1,7 @@
 let users
 
 // C'est une fonction qui GET users -> A supprimer à terme (ne pas afficher la liste des users + password en front)
-async function fetchUsers() {
+/*async function fetchUsers() {
   try {
     const response = await fetch('/users')
     const users = await response.json()
@@ -15,6 +15,7 @@ async function fetchUsers() {
 (async () => {
   users = await fetchUsers()
 })()
+*/
 
 async function onClickLoginFormSubmission() {
 
