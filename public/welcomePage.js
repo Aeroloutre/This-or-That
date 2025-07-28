@@ -46,3 +46,6 @@ async function onClickLoginFormSubmission() {
   console.log(objToken.token)
   localStorage.setItem('token', objToken.token)
 }
+
+// Faire une fonction qui dit "si on détecte un token correspondant à un user -> On lui sert toutes les pages"
+// Et ducoup faire la route backend qui va avec

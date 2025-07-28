@@ -1,12 +1,13 @@
 h1{
     font-weight :2000;
     color : rgb(0, 0, 0);
-    font-family : "Montserrat";
+    font-family : "Inter";
     font-size : 500%;
     text-align: center;
 }
 
 .centered {
+    flex-direction: column;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,5 +32,62 @@ h1{
 }
 
 body {
-  background-color: gray;
+    font-family: "Inter";
+    background-color: #919191;
+}
+
+.input-container {
+    position: relative;
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.input-container label {
+    position: absolute;
+    left: 10px;
+    top: -10px;
+    background-color: #e0e0e0;
+    color: #555;
+    padding: 0 5px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #4285f4;
+    border-radius: 24px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.littleSeparator {
+  position: relative;
+  height: 5vh;
+}
+
+.bigSeparator {
+  position: relative;
+  height: 15vh;
+}
+
+.button {
+    position: relative;
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #4285f4;
+    border-radius: 24px;
+    outline: none;
+    box-sizing: border-box;  
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #3367d6; /* Couleur de fond au survol */
 }
