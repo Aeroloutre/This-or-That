@@ -135,12 +135,16 @@ router.post('/users', async (req, res) => {
         password: newInputUser.password
       }
     })
-    res.json(newUser)
+    return res.status(201).json({
+      message: "Votre compte a bien été crée vos informations sont : ",
+      user: newUser})
   }
   catch (error) {
-    console.error(error.message)
-    res.status(500).json({ error: error.message })
+    console.error(error)
+    return res.status(500).json({ message: "Une erreur est survenue lors de la création du compte" })
   }
+
+  
 })
 
 export { router }

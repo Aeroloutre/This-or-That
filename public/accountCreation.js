@@ -24,7 +24,10 @@ async function onClickRegisterFormSubmission() {
   if (!response.ok) {
     const errorData = await response.json();
     alert(errorData.message);
+    return;
   }
   const newUser = await response.json()
   console.log(newUser)
+  alert("Votre compte a bien été crée !")
+  window.location.href = "index.html";
 }

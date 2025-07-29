@@ -40,13 +40,15 @@ async function onClickLoginFormSubmission() {
   });
   if (!response.ok) {
     const errorData = await response.json();
-    alert(errorData.message); // Affiche "Mot de passe incorrect" à l'utilisateur
+    alert(errorData.message); // Affiche "--- incorrect" à l'utilisateur
   }
   const objToken = await response.json()
   console.log(objToken.token)
   localStorage.setItem('token', objToken.token)
+  alert("Connexion réussie !")
   window.location.href = "playTheGame.html"; // redirection vers le jeu
 }
+
 
 // Faire une fonction qui dit "si on détecte un token correspondant à un user -> On lui sert toutes les pages"
 // Et ducoup faire la route backend qui va avec
