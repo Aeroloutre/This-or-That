@@ -28,7 +28,7 @@ router.get('/questions', authenticateToken, async (req, res) => {
 })
 
 // Route GET /users
-router.get('/users', async (req, res) => {
+/*router.get('/users', async (req, res) => {
   try {
     const users = await prisma.users.findMany()
     res.json(users)
@@ -37,7 +37,7 @@ router.get('/users', async (req, res) => {
     console.error(error.message)
     res.status(500).json({ error: error.message })
   }
-})
+})*/
 
 // Route PUT /questions pour mettre à jour une question par index
 router.put('/questions/:id/firstchoicecount', authenticateToken, async (req, res) => {
@@ -91,7 +91,7 @@ router.post('/questions', authenticateToken, async (req, res) => {
   }
 })
 
-router.post('/users', async (req, res) => {
+router.post('/usersAuth', async (req, res) => {
   const inputUser = req.body.inputUser
 
   try {
@@ -119,6 +119,24 @@ router.post('/users', async (req, res) => {
     res.json({ token })
   }
 
+  catch (error) {
+    console.error(error.message)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+router.post('/users', async (req, res) => {
+  const newInputUser = req.body.newInputUser
+  try {
+    const newUser = await prisma.users.create({
+      data: {
+        name: newInputUser.name,
+        email: newInputUser.email,
+        password: newInputUser.password
+      }
+    })
+    res.json(newUser)
+  }
   catch (error) {
     console.error(error.message)
     res.status(500).json({ error: error.message })

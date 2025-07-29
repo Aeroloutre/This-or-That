@@ -26,7 +26,7 @@ async function onClickLoginFormSubmission() {
   console.log("email saisi :", email);
   console.log("password saisi :", password);
 
-  const response = await fetch(`/users`, {
+  const response = await fetch(`/usersAuth`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json' // pour que req.body fonctionne
@@ -45,6 +45,7 @@ async function onClickLoginFormSubmission() {
   const objToken = await response.json()
   console.log(objToken.token)
   localStorage.setItem('token', objToken.token)
+  window.location.href = "playTheGame.html"; // redirection vers le jeu
 }
 
 // Faire une fonction qui dit "si on détecte un token correspondant à un user -> On lui sert toutes les pages"
