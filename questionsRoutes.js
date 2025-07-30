@@ -72,6 +72,24 @@ router.put('/questions/:id/secondchoicecount', authenticateToken, async (req, re
   }
 })
 
+/* -> Faire une route pour update la liste des utilisateurs bannis de la route en question
+router.put('/questions/:id/secondchoicecount', authenticateToken, async (req, res) => {
+  const questionIndex = parseInt(req.params.id)
+  console.log("index de la question à put", questionIndex)
+  try {
+    const updatedQuestion = await prisma.questions.update({
+      where: { id: questionIndex },
+      data: { bannedUserId: {  } }
+    })
+    res.json(updatedQuestion)
+  }
+  catch (error) {
+    console.error(error.message)
+    res.status(500).json({ error: error.message })
+  }
+})
+*/
+
 router.post('/questions', authenticateToken, async (req, res) => {
   const question = req.body.question
   try {
@@ -143,11 +161,9 @@ router.post('/users', async (req, res) => {
     console.error(error)
     return res.status(500).json({ message: "Une erreur est survenue lors de la création du compte" })
   }
-
-  
 })
 
-// Vérification d'un token passé dans le header Authorization: Bearer <token>
+// Vérification d'un token passé dans le header
 router.get('/protected', (req, res) => {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
