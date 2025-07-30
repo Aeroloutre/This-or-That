@@ -2,6 +2,7 @@ let idDeQuestion
 let data
 let currentQuestion
 let canClick = true
+let user
 
 const bannediDs = []
 const content = document.getElementById('content')
@@ -29,32 +30,35 @@ elementNext.addEventListener('click', nextButton)
 elementThis.addEventListener('click', onClickVal1)
 elementThat.addEventListener('click', onClickVal2)
 
-function getRandomIntExcluding(data, excluded) {
-  let randomId;
-  const allIds = data.map(obj => obj.id);
-  do {
-    randomId = allIds[Math.floor(Math.random() * allIds.length)];
-  } while (excluded.includes(randomId));
-  return randomId
+function getRandomQuestionNotAlreadySeen(data) {
+  //Filtrer les questions NON bannies pour cet utilisateur
+  const filteredQuestions = data.filter(question => {
+    return !(question.bannedUserId).includes(user.id)
+  })
+
+  //Choisir une question aléatoire
+  if (filteredQuestions.length === 0) {
+    console.log("Aucune question disponible pour cet utilisateur")
+    location.href = "/submitAQuestion.html";
+    alert("Nous n'avons plus de question en stock, créez la votre !")
+    return null
+  }
+  const randomIndex = Math.floor(Math.random() * filteredQuestions.length)
+  const randomQuestion = filteredQuestions[randomIndex]
+
+  console.log("Question choisie :", randomQuestion)
+
+  return (randomQuestion)
 }
 
 function initialisation(data) {
 
-  if (data.length === bannediDs.length) {
-    location.href = "/submitAQuestion.html";
-    return
-  }
+  currentQuestion = getRandomQuestionNotAlreadySeen(data, user)
 
-  idDeQuestion = getRandomIntExcluding(data, bannediDs);
+  document.getElementById('this').innerHTML = currentQuestion.firstChoice
+  document.getElementById('that').innerHTML = currentQuestion.secondChoice
 
-  console.log('Id de la Question choisie', idDeQuestion)
-
-  currentQuestion = data.find(obj => obj.id === idDeQuestion);
-
-  console.log('question choisie', currentQuestion)
-
-  document.getElementById('this').innerHTML = currentQuestion.firstchoice
-  document.getElementById('that').innerHTML = currentQuestion.secondchoice
+  elementNext.disabled = true
 
   return (idDeQuestion, currentQuestion)
 }
@@ -62,7 +66,8 @@ function initialisation(data) {
 async function onClickVal1() {
   if (canClick === false) return
   canClick = false
-  const response = await fetch(`/questions/${currentQuestion.id}/firstchoicecount`, {
+  const userId = user.id
+  const response = await fetch(`/questions/${currentQuestion.id}/${userId}/firstChoiceCount`, {
     method: 'PUT',
     headers: {
       authorization: 'Bearer ' + localStorage.getItem('token')
@@ -72,14 +77,14 @@ async function onClickVal1() {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  bannediDs.push(idDeQuestion) // Remplacer le push par un put dans la base sur l'user séléctionné
-  console.log('index bannis', bannediDs)
+  console.log('index bannis', data.bannedUserId)
 }
 
 async function onClickVal2() {
   if (canClick === false) return
   canClick = false
-  const response = await fetch(`/questions/${currentQuestion.id}/secondchoicecount`, {
+  const userId = user.id
+  const response = await fetch(`/questions/${currentQuestion.id}/${userId}/secondChoiceCount`, {
     method: 'PUT',
     headers: {
       authorization: 'Bearer ' + localStorage.getItem('token')
@@ -88,31 +93,31 @@ async function onClickVal2() {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  bannediDs.push(idDeQuestion)
-  console.log('index bannis', bannediDs)
+  console.log('index bannis', data.bannedUserId)
 }
 
 function displayResult(currentQuestion) {
-  document.getElementById('this').innerHTML = Math.round(((currentQuestion.firstchoicecount / (currentQuestion.firstchoicecount + currentQuestion.secondchoicecount)) * 100) * 10) / 10 + ' %'
-  document.getElementById('that').innerHTML = Math.round(((currentQuestion.secondchoicecount / (currentQuestion.secondchoicecount + currentQuestion.firstchoicecount)) * 100) * 10) / 10 + ' %'
-
-  next.style.display = 'block'
+  document.getElementById('this').innerHTML = Math.round(((currentQuestion.firstChoiceCount / (currentQuestion.firstChoiceCount + currentQuestion.secondChoiceCount)) * 100) * 10) / 10 + ' %'
+  document.getElementById('that').innerHTML = Math.round(((currentQuestion.secondChoiceCount / (currentQuestion.secondChoiceCount + currentQuestion.firstChoiceCount)) * 100) * 10) / 10 + ' %'
+  
+  elementNext.disabled = false
+  elementNext.style.display = 'block'
 }
 
-function nextButton() {
+async function nextButton() {
   console.log('next button')
   document.getElementById('this').innerHTML = 'This'
   document.getElementById('that').innerHTML = 'That'
   next.style.display = 'none'
   canClick = true
+  data = await fetchQuestions()
   initialisation(data)
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  const user = await checkAuth()
-  console.log('utilisateur connecté', user)
-  console.log("email de l'user", user.email)
+  user = await checkAuth()
   document.getElementById("user").innerHTML = user.email
   data = await fetchQuestions()
-  initialisation(data)
+  initialisation(data, user)
+  return (user)
 });

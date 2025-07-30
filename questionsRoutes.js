@@ -40,13 +40,20 @@ router.get('/questions', authenticateToken, async (req, res) => {
 })*/
 
 // Route PUT /questions pour mettre à jour une question par index
-router.put('/questions/:id/firstchoicecount', authenticateToken, async (req, res) => {
+router.put('/questions/:id/:userId/firstChoiceCount', authenticateToken, async (req, res) => {
   const questionIndex = parseInt(req.params.id)
-  console.log("index de la question à put", questionIndex)
+  const userId = parseInt(req.params.userId)
   try {
+    const currentQuestion = await prisma.questions.findUnique({ where: { id: questionIndex }, })
+
+    const updateBannedUserIds = [...(currentQuestion.bannedUserId), userId]
+
     const updatedQuestion = await prisma.questions.update({
       where: { id: questionIndex },
-      data: { firstchoicecount: { increment: 1 } }
+      data: {
+        firstChoiceCount: { increment: 1 },
+        bannedUserId: updateBannedUserIds
+      }
     })
     res.json(updatedQuestion)
   }
@@ -56,30 +63,20 @@ router.put('/questions/:id/firstchoicecount', authenticateToken, async (req, res
   }
 })
 
-router.put('/questions/:id/secondchoicecount', authenticateToken, async (req, res) => {
+router.put('/questions/:id/:userId/secondChoiceCount', authenticateToken, async (req, res) => {
   const questionIndex = parseInt(req.params.id)
-  console.log("index de la question à put", questionIndex)
+  const userId = parseInt(req.params.userId)
   try {
-    const updatedQuestion = await prisma.questions.update({
-      where: { id: questionIndex },
-      data: { secondchoicecount: { increment: 1 } }
-    })
-    res.json(updatedQuestion)
-  }
-  catch (error) {
-    console.error(error.message)
-    res.status(500).json({ error: error.message })
-  }
-})
+    const currentQuestion = await prisma.questions.findUnique({ where: { id: questionIndex }, })
 
-/* -> Faire une route pour update la liste des utilisateurs bannis de la route en question
-router.put('/questions/:id/secondchoicecount', authenticateToken, async (req, res) => {
-  const questionIndex = parseInt(req.params.id)
-  console.log("index de la question à put", questionIndex)
-  try {
+    const updateBannedUserIds = [...(currentQuestion.bannedUserId), userId]
+
     const updatedQuestion = await prisma.questions.update({
       where: { id: questionIndex },
-      data: { bannedUserId: {  } }
+      data: {
+        secondChoiceCount: { increment: 1 },
+        bannedUserId: updateBannedUserIds
+      }
     })
     res.json(updatedQuestion)
   }
@@ -88,17 +85,16 @@ router.put('/questions/:id/secondchoicecount', authenticateToken, async (req, re
     res.status(500).json({ error: error.message })
   }
 })
-*/
 
 router.post('/questions', authenticateToken, async (req, res) => {
   const question = req.body.question
   try {
     const newQuestion = await prisma.questions.create({
       data: {
-        firstchoice: question.firstchoice,
-        firstchoicecount: question.firstchoicecount,
-        secondchoice: question.secondchoice,
-        secondchoicecount: question.secondchoicecount
+        firstChoice: question.firstChoice,
+        firstChoiceCount: question.firstChoiceCount,
+        secondChoice: question.secondChoice,
+        secondChoiceCount: question.secondChoiceCount
       }
     })
     res.json(newQuestion)
@@ -155,7 +151,8 @@ router.post('/users', async (req, res) => {
     })
     return res.status(201).json({
       message: "Votre compte a bien été crée vos informations sont : ",
-      user: newUser})
+      user: newUser
+    })
   }
   catch (error) {
     console.error(error)

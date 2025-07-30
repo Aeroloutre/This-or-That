@@ -9,16 +9,16 @@ datasource db {
 
 model questions {
   id                Int    @id @default(autoincrement())
-  firstchoice       String @db.VarChar(255)
-  firstchoicecount  Int
-  secondchoice      String @db.VarChar(255)
-  secondchoicecount Int
-  bannedUserId      Int[]
+  firstChoice       String @db.VarChar(255)
+  firstChoiceCount  Int
+  secondChoice      String @db.VarChar(255)
+  secondChoiceCount Int
+  bannedUserId      Int[]  @default([])
 }
 
 model users {
-  name              String @db.VarChar(30)
-  id                Int    @id @default(autoincrement())
-  email             String @unique @db.VarChar(255)
-  password          String @db.VarChar(255)
+  name     String @db.VarChar(30)
+  id       Int    @id @default(autoincrement())
+  email    String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
 }

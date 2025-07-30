@@ -12,13 +12,15 @@ async function onClickQuestionFormSubmission() {
     body: JSON.stringify({
 
       "question": {
-        "firstchoice": choice1,
-        "firstchoicecount": 0,
-        "secondchoice": choice2,
-        "secondchoicecount": 0
+        "firstChoice": choice1,
+        "firstChoiceCount": 0,
+        "secondChoice": choice2,
+        "secondChoiceCount": 0
       }
     }),
-  });
+  })
+  alert("Merci pour votre question !")
+  ;
 
   console.log('La question POST', await response.json())
 }
