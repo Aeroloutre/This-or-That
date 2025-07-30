@@ -28,6 +28,6 @@ async function onClickQuestionFormSubmission() {
 document.addEventListener("DOMContentLoaded", async function () {
   const user = await checkAuth()
   console.log('utilisateur connecté', user)
-  console.log("email de l'user", user.email)
-  document.getElementById("user").innerHTML = user.email
+  console.log("nom de l'user", user.name)
+  document.getElementById("user").innerHTML = user.name
 });

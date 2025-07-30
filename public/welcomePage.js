@@ -19,7 +19,7 @@ let users
 
 async function onClickLoginFormSubmission() {
 
-  //document.getElementById("formSubmissionButton").disabled = true;
+  document.getElementById("formSubmissionButton").disabled = true;
 
   const email = document.getElementById("email").value
   const password = document.getElementById("password").value
@@ -48,6 +48,3 @@ async function onClickLoginFormSubmission() {
   alert("Connexion réussie !")
   window.location.href = "playTheGame.html"; // redirection vers le jeu
 }
-
-// Faire une fonction qui dit "si on détecte un token correspondant à un user -> On lui sert toutes les pages"
-// Et ducoup faire la route backend qui va avec

@@ -15,7 +15,7 @@ async function checkAuth() {
 
     const data = await res.json()
     const user = data.user
-    return data.user
+    return user
 
   } catch (err) {
     window.location.href = '/accountCreation.html'

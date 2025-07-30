@@ -30,7 +30,7 @@ router.get('/questions', authenticateToken, async (req, res) => {
 // Route GET /users
 /*router.get('/users', async (req, res) => {
   try {
-    const users = await prisma.users.findMany()
+    const users = await prisma.users.find()
     res.json(users)
   }
   catch (error) {
@@ -125,7 +125,7 @@ router.post('/usersAuth', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, name: user.name},
       SECRET,
       { expiresIn: '1h' }
     )
