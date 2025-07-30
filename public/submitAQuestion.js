@@ -23,6 +23,9 @@ async function onClickQuestionFormSubmission() {
   console.log('La question POST', await response.json())
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  checkAuth()
+document.addEventListener("DOMContentLoaded", async function () {
+  const user = await checkAuth()
+  console.log('utilisateur connecté', user)
+  console.log("email de l'user", user.email)
+  document.getElementById("user").innerHTML = user.email
 });

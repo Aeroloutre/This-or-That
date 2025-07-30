@@ -1,18 +1,23 @@
 async function checkAuth() {
   const token = localStorage.getItem('token')
-  await fetch('/protected', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-    .then(res => {
-      if (!res.ok) {
-        // Token invalide ou absent → rediriger
-        window.location.href = '/accountCreation.html'
+  try {
+    const res = await fetch('/protected', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
     })
-    .catch(() => {
+    if (!res.ok) {
+      // Token invalide ou absent → redirection
       window.location.href = '/accountCreation.html'
-    })
+      return
+    }
+
+    const data = await res.json()
+    const user = data.user
+    return data.user
+
+  } catch (err) {
+    window.location.href = '/accountCreation.html'
+  }
 }

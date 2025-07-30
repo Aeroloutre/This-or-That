@@ -16,8 +16,9 @@ model questions {
 }
 
 model users {
-  name     String @db.VarChar(30)
-  id       Int    @id @default(autoincrement())
-  email    String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
+  name              String @db.VarChar(30)
+  id                Int    @id @default(autoincrement())
+  email             String @unique @db.VarChar(255)
+  password          String @db.VarChar(255)
+  bannedQuestion    Int[]
 }

@@ -72,7 +72,7 @@ async function onClickVal1() {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  bannediDs.push(idDeQuestion)
+  bannediDs.push(idDeQuestion) // Remplacer le push par un put dans la base sur l'user séléctionné
   console.log('index bannis', bannediDs)
 }
 
@@ -109,7 +109,10 @@ function nextButton() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  await checkAuth()
+  const user = await checkAuth()
+  console.log('utilisateur connecté', user)
+  console.log("email de l'user", user.email)
+  document.getElementById("user").innerHTML = user.email
   data = await fetchQuestions()
   initialisation(data)
 });
