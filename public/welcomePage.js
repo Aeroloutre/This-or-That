@@ -49,6 +49,5 @@ async function onClickLoginFormSubmission() {
   window.location.href = "playTheGame.html"; // redirection vers le jeu
 }
 
-
 // Faire une fonction qui dit "si on détecte un token correspondant à un user -> On lui sert toutes les pages"
 // Et ducoup faire la route backend qui va avec

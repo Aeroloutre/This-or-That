@@ -25,12 +25,6 @@ async function fetchQuestions() {
   }
 }
 
-// On get les questions au chargement
-(async () => {
-  data = await fetchQuestions()
-  initialisation(data)
-})()
-
 elementNext.addEventListener('click', nextButton)
 elementThis.addEventListener('click', onClickVal1)
 elementThat.addEventListener('click', onClickVal2)
@@ -113,3 +107,9 @@ function nextButton() {
   canClick = true
   initialisation(data)
 }
+
+document.addEventListener("DOMContentLoaded", async function () {
+  await checkAuth()
+  data = await fetchQuestions()
+  initialisation(data)
+});

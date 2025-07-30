@@ -22,3 +22,7 @@ async function onClickQuestionFormSubmission() {
 
   console.log('La question POST', await response.json())
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  checkAuth()
+});

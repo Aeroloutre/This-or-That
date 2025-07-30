@@ -147,4 +147,19 @@ router.post('/users', async (req, res) => {
   
 })
 
+// Vérification d'un token passé dans le header Authorization: Bearer <token>
+router.get('/protected', (req, res) => {
+  const authHeader = req.headers.authorization
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (!token) return res.sendStatus(401).message("Aucun token trouvé")
+
+  try {
+    const decoded = jwt.verify(token, SECRET)
+    res.status(200).json({ message: 'Token valide', user: decoded })
+  } catch (error) {
+    res.status(403).json({ message: 'Token invalide' })
+  }
+})
+
 export { router }
