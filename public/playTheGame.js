@@ -5,11 +5,11 @@ let canClick = true
 let user
 let bannedQuestions
 
-const bannediDs = []
 const content = document.getElementById('content')
 const elementThis = document.getElementById('this')
 const elementThat = document.getElementById('that')
 const elementNext = document.getElementById('next')
+const elementResetQuestions = document.getElementById('resetQuestions')
 
 // C'est une fonction qui GET questions
 async function fetchQuestions() {
@@ -43,10 +43,6 @@ async function fetchBannedQuestions() {
     console.error('Erreur lors de la récupération des bannedQuestions', error)
   }
 }
-
-elementNext.addEventListener('click', nextButton)
-elementThis.addEventListener('click', onClickVal1)
-elementThat.addEventListener('click', onClickVal2)
 
 function getRandomQuestionNotAlreadySeen(data, bannedQuestions) {
   const bannedIds = bannedQuestions.map(bq => bq.questionid);
@@ -132,7 +128,24 @@ async function nextButton() {
   initialisation(data, bannedQuestions)
 }
 
+async function resetQuestions() {
+  const userId = user.id
+  const response = await fetch(`/resetQuestions/${userId}`, { 
+    method: 'DELETE',
+    headers: {
+      authorization: 'Bearer ' + localStorage.getItem('token')
+    }
+  })
+
+  const deletedBannedQuestions = await response.json()
+  console.log('Les id de questions bannis supprimées sont les suivantes :', deletedBannedQuestions)
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
+  elementNext.addEventListener('click', nextButton)
+  elementThis.addEventListener('click', onClickVal1)
+  elementThat.addEventListener('click', onClickVal2)
+  elementResetQuestions.addEventListener('click', resetQuestions)
   user = await checkAuth()
   document.getElementById("user").innerHTML = user.email
   bannedQuestions = await fetchBannedQuestions()

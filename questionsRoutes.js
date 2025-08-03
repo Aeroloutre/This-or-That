@@ -49,8 +49,8 @@ router.put('/questions/:id/:userId/firstChoiceCount', authenticateToken, async (
 
     const updateBannedQuestions = await prisma.banned_questions_users.create({
       data: {
-        userid : userId,
-        questionid : questionIndex
+        userid: userId,
+        questionid: questionIndex
       }
     })
 
@@ -76,8 +76,8 @@ router.put('/questions/:id/:userId/secondChoiceCount', authenticateToken, async 
 
     const updateBannedQuestions = await prisma.banned_questions_users.create({
       data: {
-        userid : userId,
-        questionid : questionIndex
+        userid: userId,
+        questionid: questionIndex
       }
     })
 
@@ -134,7 +134,7 @@ router.post('/usersAuth', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, name: user.name},
+      { id: user.id, email: user.email, name: user.name },
       SECRET,
       { expiresIn: '1h' }
     )
@@ -189,12 +189,28 @@ router.get('/bannedQuestions/:userId', authenticateToken, async (req, res) => {
   const userId = parseInt(req.params.userId)
   try {
     const bannedQuestions = await prisma.banned_questions_users.findMany({
-      where: { userid : userId }})
+      where: { userid: userId }
+    })
     res.json(bannedQuestions)
   }
   catch (error) {
     console.error(error.message)
     res.status(500).json({ error: error.message })
+  }
+})
+
+router.delete(`/resetQuestions/:userId`, authenticateToken, async (req, res) => {
+  const userId = parseInt(req.params.userId)
+  console.log("userid dans le delete", userId)
+  try {
+    const deletedBannedQuestions = await prisma.banned_questions_users.deleteMany({
+      where: { userid: userId }
+    })
+    res.json(deletedBannedQuestions)
+  }
+  catch (error) {
+    console.error(error.message)
+    res.status(500).json({error: error.message})
   }
 })
 
