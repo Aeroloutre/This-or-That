@@ -44,18 +44,23 @@ router.put('/questions/:id/:userId/firstChoiceCount', authenticateToken, async (
   const questionIndex = parseInt(req.params.id)
   const userId = parseInt(req.params.userId)
   try {
-    const currentQuestion = await prisma.questions.findUnique({ where: { id: questionIndex }, })
+    const bannedQuestions = await prisma.banned_questions_users.findMany({ where: { userid: userId }, })
+    console.log("banned question : ", bannedQuestions)
 
-    const updateBannedUserIds = [...(currentQuestion.bannedUserId), userId]
+    const updateBannedQuestions = await prisma.banned_questions_users.create({
+      data: {
+        userid : userId,
+        questionid : questionIndex
+      }
+    })
 
     const updatedQuestion = await prisma.questions.update({
       where: { id: questionIndex },
       data: {
         firstChoiceCount: { increment: 1 },
-        bannedUserId: updateBannedUserIds
       }
     })
-    res.json(updatedQuestion)
+    res.json(updatedQuestion, updateBannedQuestions)
   }
   catch (error) {
     console.error(error.message)
@@ -67,18 +72,22 @@ router.put('/questions/:id/:userId/secondChoiceCount', authenticateToken, async 
   const questionIndex = parseInt(req.params.id)
   const userId = parseInt(req.params.userId)
   try {
-    const currentQuestion = await prisma.questions.findUnique({ where: { id: questionIndex }, })
+    const bannedQuestions = await prisma.banned_questions_users.findMany({ where: { userid: userId }, })
 
-    const updateBannedUserIds = [...(currentQuestion.bannedUserId), userId]
+    const updateBannedQuestions = await prisma.banned_questions_users.create({
+      data: {
+        userid : userId,
+        questionid : questionIndex
+      }
+    })
 
     const updatedQuestion = await prisma.questions.update({
       where: { id: questionIndex },
       data: {
         secondChoiceCount: { increment: 1 },
-        bannedUserId: updateBannedUserIds
       }
     })
-    res.json(updatedQuestion)
+    res.json(updatedQuestion, updateBannedQuestions)
   }
   catch (error) {
     console.error(error.message)
@@ -172,6 +181,20 @@ router.get('/protected', (req, res) => {
     res.status(200).json({ message: 'Token valide', user: decoded })
   } catch (error) {
     res.status(403).json({ message: 'Token invalide' })
+  }
+})
+
+// Route GET /banned_questions_users
+router.get('/bannedQuestions/:userId', authenticateToken, async (req, res) => {
+  const userId = parseInt(req.params.userId)
+  try {
+    const bannedQuestions = await prisma.banned_questions_users.findMany({
+      where: { userid : userId }})
+    res.json(bannedQuestions)
+  }
+  catch (error) {
+    console.error(error.message)
+    res.status(500).json({ error: error.message })
   }
 })
 

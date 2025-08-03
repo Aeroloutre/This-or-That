@@ -3,6 +3,7 @@ let data
 let currentQuestion
 let canClick = true
 let user
+let bannedQuestions
 
 const bannediDs = []
 const content = document.getElementById('content')
@@ -26,17 +27,34 @@ async function fetchQuestions() {
   }
 }
 
+// C'est une fonction qui GET bannedQuestions
+async function fetchBannedQuestions() {
+  try {
+    const userId = user.id
+    const response = await fetch(`/bannedQuestions/${userId}`, {
+      headers: {
+        authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    const bannedQuestions = await response.json()
+    console.log('bannedQuestions :', bannedQuestions)
+    return bannedQuestions
+  } catch (error) {
+    console.error('Erreur lors de la récupération des bannedQuestions', error)
+  }
+}
+
 elementNext.addEventListener('click', nextButton)
 elementThis.addEventListener('click', onClickVal1)
 elementThat.addEventListener('click', onClickVal2)
 
-function getRandomQuestionNotAlreadySeen(data) {
-  //Filtrer les questions NON bannies pour cet utilisateur
-  const filteredQuestions = data.filter(question => {
-    return !(question.bannedUserId).includes(user.id)
-  })
+function getRandomQuestionNotAlreadySeen(data, bannedQuestions) {
+  const bannedIds = bannedQuestions.map(bq => bq.questionid);
+  const filteredQuestions = data.filter(q => !bannedIds.includes(q.id));
 
-  //Choisir une question aléatoire
+  //On choisit une question aléatoires parmis celles qu'il reste
+  console.log("questions bannis reçu dans get random", bannedQuestions)
+  console.log("filtered question : ", filteredQuestions)
   if (filteredQuestions.length === 0) {
     console.log("Aucune question disponible pour cet utilisateur")
     location.href = "/submitAQuestion.html";
@@ -51,9 +69,9 @@ function getRandomQuestionNotAlreadySeen(data) {
   return (randomQuestion)
 }
 
-function initialisation(data) {
+function initialisation(data, bannedQuestions) {
 
-  currentQuestion = getRandomQuestionNotAlreadySeen(data, user)
+  currentQuestion = getRandomQuestionNotAlreadySeen(data, bannedQuestions)
 
   document.getElementById('this').innerHTML = currentQuestion.firstChoice
   document.getElementById('that').innerHTML = currentQuestion.secondChoice
@@ -77,7 +95,6 @@ async function onClickVal1() {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  console.log('index bannis', data.bannedUserId)
 }
 
 async function onClickVal2() {
@@ -93,7 +110,6 @@ async function onClickVal2() {
   const data = await response.json()
   console.log('data après le PUT', data)
   displayResult(data)
-  console.log('index bannis', data.bannedUserId)
 }
 
 function displayResult(currentQuestion) {
@@ -111,13 +127,16 @@ async function nextButton() {
   next.style.display = 'none'
   canClick = true
   data = await fetchQuestions()
-  initialisation(data)
+  bannedQuestions = await fetchBannedQuestions()
+  console.log('index bannis', bannedQuestions)
+  initialisation(data, bannedQuestions)
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
   user = await checkAuth()
   document.getElementById("user").innerHTML = user.email
+  bannedQuestions = await fetchBannedQuestions()
   data = await fetchQuestions()
-  initialisation(data, user)
+  initialisation(data, bannedQuestions)
   return (user)
 });
