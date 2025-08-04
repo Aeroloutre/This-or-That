@@ -20,6 +20,7 @@
     rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <title>This or That</title>
@@ -36,17 +37,54 @@
     The game
   </h1>
 
+  <div style="position: absolute; top: 2vh; right: 2vh;">
+    <el-dropdown class="relative inline-block">
+      <button id="user"
+        class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50">
+        PROFILE
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="-mr-1 size-5 text-gray-400">
+          <path
+            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+            clip-rule="evenodd" fill-rule="evenodd" />
+        </svg>
+      </button>
+
+      <el-menu popover
+        class="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 z-50">
+        <div class="py-1">
+          <a id="resetQuestions" href="#"
+            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Reset
+            Questions</a>
+          <a href="#"
+            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Se
+            déconnecter</a>
+        </div>
+      </el-menu>
+    </el-dropdown>
+  </div>
+
   <div id="content">
+
+    <div class="centered">
+      <h1 class="text-2xl font-bold">
+        Tu préfères :
+      </h1>
+    </div>
 
     <div class="centered">
       <button id="this" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         this
       </button>
     </div>
+    <div class="centered">
+      <button id="%this" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        %
+      </button>
+    </div>
 
     <div class="centered">
       <h1 class="text-2xl font-bold">
-        OR
+        OU
       </h1>
     </div>
 
@@ -55,16 +93,9 @@
         That
       </button>
     </div>
-
-    <div style="position: absolute; top: 2vh; right: 2vh;">
-      <a id="user" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        PROFILE
-      </a>
-    </div>
-
-    <div style="position: absolute; top: 6vh; right: 2vh;">
-      <button id="resetQuestions" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Reset Questions
+    <div class="centered">
+      <button id="%that" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        %
       </button>
     </div>
 

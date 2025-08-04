@@ -8,6 +8,8 @@ let bannedQuestions
 const content = document.getElementById('content')
 const elementThis = document.getElementById('this')
 const elementThat = document.getElementById('that')
+const elementPercentageThis = document.getElementById('%this')
+const elementPercentageThat = document.getElementById('%that')
 const elementNext = document.getElementById('next')
 const elementResetQuestions = document.getElementById('resetQuestions')
 
@@ -68,10 +70,13 @@ function getRandomQuestionNotAlreadySeen(data, bannedQuestions) {
 function initialisation(data, bannedQuestions) {
 
   currentQuestion = getRandomQuestionNotAlreadySeen(data, bannedQuestions)
-
-  document.getElementById('this').innerHTML = currentQuestion.firstChoice
-  document.getElementById('that').innerHTML = currentQuestion.secondChoice
-
+  
+  elementPercentageThat.style.display = 'none'
+  elementPercentageThis.style.display = 'none'
+  elementThis.innerHTML = currentQuestion.firstChoice
+  elementThat.innerHTML = currentQuestion.secondChoice
+  
+  next.style.display = 'none'
   elementNext.disabled = true
 
   return (idDeQuestion, currentQuestion)
@@ -109,17 +114,18 @@ async function onClickVal2() {
 }
 
 function displayResult(currentQuestion) {
-  document.getElementById('this').innerHTML = Math.round(((currentQuestion.firstChoiceCount / (currentQuestion.firstChoiceCount + currentQuestion.secondChoiceCount)) * 100) * 10) / 10 + ' %'
-  document.getElementById('that').innerHTML = Math.round(((currentQuestion.secondChoiceCount / (currentQuestion.secondChoiceCount + currentQuestion.firstChoiceCount)) * 100) * 10) / 10 + ' %'
+  elementPercentageThis.style.display = 'block'
+  elementPercentageThat.style.display = 'block'
+  elementPercentageThis.innerHTML = Math.round(((currentQuestion.firstChoiceCount / (currentQuestion.firstChoiceCount + currentQuestion.secondChoiceCount)) * 100) * 10) / 10 + ' %'
+  elementPercentageThat.innerHTML = Math.round(((currentQuestion.secondChoiceCount / (currentQuestion.secondChoiceCount + currentQuestion.firstChoiceCount)) * 100) * 10) / 10 + ' %'
   
   elementNext.disabled = false
   elementNext.style.display = 'block'
 }
 
 async function nextButton() {
-  console.log('next button')
-  document.getElementById('this').innerHTML = 'This'
-  document.getElementById('that').innerHTML = 'That'
+  //document.getElementById('this').innerHTML = 'This'
+  //document.getElementById('that').innerHTML = 'That'
   next.style.display = 'none'
   canClick = true
   data = await fetchQuestions()
@@ -138,7 +144,8 @@ async function resetQuestions() {
   })
 
   const deletedBannedQuestions = await response.json()
-  console.log('Les id de questions bannis supprimées sont les suivantes :', deletedBannedQuestions)
+  alert('Vous pouvez désormais revoir ' + deletedBannedQuestions + " questions !")
+  console.log('Vous pouvez désormais revoir :' + deletedBannedQuestions + " questions !")
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -147,7 +154,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   elementThat.addEventListener('click', onClickVal2)
   elementResetQuestions.addEventListener('click', resetQuestions)
   user = await checkAuth()
-  document.getElementById("user").innerHTML = user.email
+  document.getElementById("user").innerHTML = user.name
   bannedQuestions = await fetchBannedQuestions()
   data = await fetchQuestions()
   initialisation(data, bannedQuestions)

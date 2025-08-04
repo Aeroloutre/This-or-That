@@ -45,7 +45,6 @@ router.put('/questions/:id/:userId/firstChoiceCount', authenticateToken, async (
   const userId = parseInt(req.params.userId)
   try {
     const bannedQuestions = await prisma.banned_questions_users.findMany({ where: { userid: userId }, })
-    console.log("banned question : ", bannedQuestions)
 
     const updateBannedQuestions = await prisma.banned_questions_users.create({
       data: {
@@ -206,7 +205,7 @@ router.delete(`/resetQuestions/:userId`, authenticateToken, async (req, res) => 
     const deletedBannedQuestions = await prisma.banned_questions_users.deleteMany({
       where: { userid: userId }
     })
-    res.json(deletedBannedQuestions)
+    res.json(deletedBannedQuestions.count)
   }
   catch (error) {
     console.error(error.message)

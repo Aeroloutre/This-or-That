@@ -31,7 +31,6 @@ async function onClickQuestionFormSubmission() {
 
 async function resetQuestions() {
   const userId = user.id
-  console.log(userId)
   const response = await fetch(`/resetQuestions/${userId}`, { 
     method: 'DELETE',
     headers: {
@@ -40,13 +39,12 @@ async function resetQuestions() {
   })
 
   const deletedBannedQuestions = await response.json()
-  console.log('Les id de questions bannis supprimées sont les suivantes :', deletedBannedQuestions)
+  alert('Vous pouvez désormais revoir ' + deletedBannedQuestions + " questions !")
+  console.log('Vous pouvez désormais revoir :' + deletedBannedQuestions + " questions !")
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
   user = await checkAuth()
-  console.log('utilisateur connecté', user)
-  console.log("nom de l'user", user.name)
   document.getElementById("user").innerHTML = user.name
   return(user)
 });
