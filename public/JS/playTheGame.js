@@ -124,8 +124,6 @@ function displayResult(currentQuestion) {
 }
 
 async function nextButton() {
-  //document.getElementById('this').innerHTML = 'This'
-  //document.getElementById('that').innerHTML = 'That'
   next.style.display = 'none'
   canClick = true
   data = await fetchQuestions()

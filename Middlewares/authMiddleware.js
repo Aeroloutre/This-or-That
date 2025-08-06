@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const SECRET = process.env.SECRET;
 
@@ -15,6 +17,7 @@ export function authenticateToken(req, res, next) {
         req.user = decoded; // on stocke l'utilisateur dans req.user
         next();
     } catch (err) {
+        console.log("erreur: ", token, SECRET);
         return res.status(403).json({ message: 'Token invalide' });
     }
 }

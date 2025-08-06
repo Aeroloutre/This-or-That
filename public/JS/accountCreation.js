@@ -29,5 +29,5 @@ async function onClickRegisterFormSubmission() {
   const newUser = await response.json()
   console.log(newUser)
   alert("Votre compte a bien été crée !")
-  window.location.href = "index.html";
+  window.location.href = "/index.html";
 }

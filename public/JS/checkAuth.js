@@ -1,7 +1,7 @@
 async function checkAuth() {
   const token = localStorage.getItem('token')
   try {
-    const res = await fetch('/protected', {
+    const res = await fetch('/verifyToken', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
