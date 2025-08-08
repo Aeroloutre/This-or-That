@@ -1,12 +1,14 @@
 let user
 const elementResetQuestions = document.getElementById('resetQuestions')
+const elementProposalThis = document.getElementById('Question1')
+const elementProposalThat = document.getElementById('Question2')
 
 elementResetQuestions.addEventListener('click', resetQuestions)
 
 async function onClickQuestionFormSubmission() {
   document.getElementById("formSubmissionButton").disabled = true;
-  const choice1 = document.getElementById("Question1").value
-  const choice2 = document.getElementById("Question2").value
+  const choice1 = elementProposalThis.value;
+  const choice2 = elementProposalThat.value;
   const response = await fetch(`/questions`, {
     method: 'POST',
     headers: {
@@ -25,6 +27,9 @@ async function onClickQuestionFormSubmission() {
     }),
   })
   alert("Merci pour votre question !");
+
+  elementProposalThis.value = '';
+  elementProposalThat.value = '';
 
   console.log('La question POST', await response.json())
 }

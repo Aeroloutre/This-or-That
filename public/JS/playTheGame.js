@@ -85,6 +85,8 @@ function initialisation(data, bannedQuestions) {
 async function onClickVal1() {
   if (canClick === false) return
   canClick = false
+  elementThis.style = 'background-color: green'
+  elementThat.style = 'background-color: gray'
   const userId = user.id
   const response = await fetch(`/questions/${currentQuestion.id}/${userId}/firstChoiceCount`, {
     method: 'PUT',
@@ -101,6 +103,8 @@ async function onClickVal1() {
 async function onClickVal2() {
   if (canClick === false) return
   canClick = false
+  elementThat.style = 'background-color: green'
+  elementThis.style = 'background-color: gray'
   const userId = user.id
   const response = await fetch(`/questions/${currentQuestion.id}/${userId}/secondChoiceCount`, {
     method: 'PUT',
@@ -126,6 +130,8 @@ function displayResult(currentQuestion) {
 async function nextButton() {
   next.style.display = 'none'
   canClick = true
+  elementThat.style = 'background-color: blue'
+  elementThis.style = 'background-color: blue'
   data = await fetchQuestions()
   bannedQuestions = await fetchBannedQuestions()
   console.log('index bannis', bannedQuestions)

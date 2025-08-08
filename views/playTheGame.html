@@ -29,9 +29,11 @@
 
 <body>
 
-  <h1 class="text-4xl font-bold">
-    This or That
-  </h1>
+  <header>
+    <h1 class="text-4xl font-bold">
+      This or That
+    </h1>
+  </header>
 
   <h1 class="text-1xl font-bold">
     The game
@@ -49,7 +51,7 @@
         </svg>
       </button>
 
-      <el-menu popover
+      <el-menu style="position: absolute; top: 6.5vh; right: 2vh; left: auto;"
         class="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 z-50">
         <div class="py-1">
           <a id="resetQuestions" href="#"
@@ -75,9 +77,9 @@
       <button id="this" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         this
       </button>
-    </div>
-    <div class="centered">
-      <button id="%this" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+
+      <button style="margin-top: 2vh; margin-bottom: 2vh;" id="%this" type="button"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         %
       </button>
     </div>
@@ -92,9 +94,9 @@
       <button id="that" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         That
       </button>
-    </div>
-    <div class="centered">
-      <button id="%that" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+
+      <button style="margin-top: 2vh; margin-bottom: 2vh;" id="%that" type="button"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         %
       </button>
     </div>
