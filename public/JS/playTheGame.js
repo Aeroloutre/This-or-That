@@ -12,6 +12,7 @@ const elementPercentageThis = document.getElementById('%this')
 const elementPercentageThat = document.getElementById('%that')
 const elementNext = document.getElementById('next')
 const elementResetQuestions = document.getElementById('resetQuestions')
+const elementDisconnect = document.getElementById('disconnect')
 
 // C'est une fonction qui GET questions
 async function fetchQuestions() {
@@ -22,10 +23,8 @@ async function fetchQuestions() {
       }
     })
     const data = await response.json()
-    console.log('data :', data)
     return data
   } catch (error) {
-    console.error('Erreur lors de la récupération des questions', error)
   }
 }
 
@@ -39,10 +38,8 @@ async function fetchBannedQuestions() {
       }
     })
     const bannedQuestions = await response.json()
-    console.log('bannedQuestions :', bannedQuestions)
     return bannedQuestions
   } catch (error) {
-    console.error('Erreur lors de la récupération des bannedQuestions', error)
   }
 }
 
@@ -51,10 +48,7 @@ function getRandomQuestionNotAlreadySeen(data, bannedQuestions) {
   const filteredQuestions = data.filter(q => !bannedIds.includes(q.id));
 
   //On choisit une question aléatoires parmis celles qu'il reste
-  console.log("questions bannis reçu dans get random", bannedQuestions)
-  console.log("filtered question : ", filteredQuestions)
   if (filteredQuestions.length === 0) {
-    console.log("Aucune question disponible pour cet utilisateur")
     location.href = "/submitAQuestion.html";
     alert("Nous n'avons plus de question en stock, créez la votre !")
     return null
@@ -62,7 +56,6 @@ function getRandomQuestionNotAlreadySeen(data, bannedQuestions) {
   const randomIndex = Math.floor(Math.random() * filteredQuestions.length)
   const randomQuestion = filteredQuestions[randomIndex]
 
-  console.log("Question choisie :", randomQuestion)
 
   return (randomQuestion)
 }
@@ -70,13 +63,13 @@ function getRandomQuestionNotAlreadySeen(data, bannedQuestions) {
 function initialisation(data, bannedQuestions) {
 
   currentQuestion = getRandomQuestionNotAlreadySeen(data, bannedQuestions)
-  
-  elementPercentageThat.style.display = 'none'
-  elementPercentageThis.style.display = 'none'
+
+  elementPercentageThat.style.visibility = 'hidden'
+  elementPercentageThis.style.visibility = 'hidden'
   elementThis.innerHTML = currentQuestion.firstChoice
   elementThat.innerHTML = currentQuestion.secondChoice
-  
-  next.style.display = 'none'
+
+  elementNext.style.visibility = 'hidden'
   elementNext.disabled = true
 
   return (idDeQuestion, currentQuestion)
@@ -85,8 +78,19 @@ function initialisation(data, bannedQuestions) {
 async function onClickVal1() {
   if (canClick === false) return
   canClick = false
-  elementThis.style = 'background-color: green'
-  elementThat.style = 'background-color: gray'
+
+  removeBgClasses(elementThis);
+  removeBgClasses(elementPercentageThis);
+
+  removeBgClasses(elementThat);
+  removeBgClasses(elementPercentageThat);
+
+  elementThat.classList.add("bg-gray-500");
+  elementPercentageThat.classList.add("bg-gray-500");
+
+  elementThis.classList.add("bg-green-400");
+  elementPercentageThis.classList.add("bg-green-400");
+
   const userId = user.id
   const response = await fetch(`/questions/${currentQuestion.id}/${userId}/firstChoiceCount`, {
     method: 'PUT',
@@ -96,15 +100,25 @@ async function onClickVal1() {
   })
 
   const data = await response.json()
-  console.log('data après le PUT', data)
   displayResult(data)
 }
 
 async function onClickVal2() {
   if (canClick === false) return
   canClick = false
-  elementThat.style = 'background-color: green'
-  elementThis.style = 'background-color: gray'
+
+  removeBgClasses(elementThis);
+  removeBgClasses(elementPercentageThis);
+
+  removeBgClasses(elementThat);
+  removeBgClasses(elementPercentageThat);
+
+  elementThat.classList.add("bg-green-400");
+  elementPercentageThat.classList.add("bg-green-400");
+
+  elementThis.classList.add("bg-gray-500");
+  elementPercentageThis.classList.add("bg-gray-500");
+
   const userId = user.id
   const response = await fetch(`/questions/${currentQuestion.id}/${userId}/secondChoiceCount`, {
     method: 'PUT',
@@ -113,34 +127,43 @@ async function onClickVal2() {
     }
   })
   const data = await response.json()
-  console.log('data après le PUT', data)
   displayResult(data)
 }
 
 function displayResult(currentQuestion) {
-  elementPercentageThis.style.display = 'block'
-  elementPercentageThat.style.display = 'block'
+  elementPercentageThis.style.visibility = 'visible'
+  elementPercentageThat.style.visibility = 'visible'
   elementPercentageThis.innerHTML = Math.round(((currentQuestion.firstChoiceCount / (currentQuestion.firstChoiceCount + currentQuestion.secondChoiceCount)) * 100) * 10) / 10 + ' %'
   elementPercentageThat.innerHTML = Math.round(((currentQuestion.secondChoiceCount / (currentQuestion.secondChoiceCount + currentQuestion.firstChoiceCount)) * 100) * 10) / 10 + ' %'
-  
+
   elementNext.disabled = false
-  elementNext.style.display = 'block'
+  elementNext.style.visibility = 'visible'
 }
 
 async function nextButton() {
-  next.style.display = 'none'
+
+  elementNext.style.visibility = 'hidden'
+
   canClick = true
-  elementThat.style = 'background-color: blue'
-  elementThis.style = 'background-color: blue'
+
+  removeBgClasses(elementThat);
+  removeBgClasses(elementThis);
+  removeBgClasses(elementPercentageThat);
+  removeBgClasses(elementPercentageThis);
+
+  elementThat.classList.add("bg-blue-500", "hover:bg-blue-700");
+  elementPercentageThat.classList.add("bg-blue-500", "hover:bg-blue-700");
+  elementThis.classList.add("bg-blue-500", "hover:bg-blue-700");
+  elementPercentageThis.classList.add("bg-blue-500", "hover:bg-blue-700");
+
   data = await fetchQuestions()
   bannedQuestions = await fetchBannedQuestions()
-  console.log('index bannis', bannedQuestions)
   initialisation(data, bannedQuestions)
 }
 
 async function resetQuestions() {
   const userId = user.id
-  const response = await fetch(`/resetQuestions/${userId}`, { 
+  const response = await fetch(`/resetQuestions/${userId}`, {
     method: 'DELETE',
     headers: {
       authorization: 'Bearer ' + localStorage.getItem('token')
@@ -149,7 +172,35 @@ async function resetQuestions() {
 
   const deletedBannedQuestions = await response.json()
   alert('Vous pouvez désormais revoir ' + deletedBannedQuestions + " questions !")
-  console.log('Vous pouvez désormais revoir :' + deletedBannedQuestions + " questions !")
+}
+
+function disconnectUser() {
+  localStorage.removeItem("token");
+  location.reload();
+  alert('Vous avez été déconnecté !')
+}
+
+function removeBgClasses(el) {
+  if (!el || !el.classList) return;
+
+  const NON_COLOR_PREFIXES = [
+    'bg-clip-', 'bg-blend-', 'bg-opacity-', 'bg-origin-',
+    'bg-repeat', 'bg-no-repeat', 'bg-fixed', 'bg-local', 'bg-scroll',
+    'bg-auto', 'bg-cover', 'bg-contain',
+    'bg-center', 'bg-top', 'bg-bottom', 'bg-left', 'bg-right',
+    'bg-gradient-to-'
+  ];
+
+  const isNonColor = (base) => NON_COLOR_PREFIXES.some(p => base.startsWith(p));
+
+  const toRemove = [];
+  for (const cls of el.classList) {
+    const base = cls.split(':').pop(); // dernière partie après les variants
+    if (base && base.startsWith('bg-') && !isNonColor(base)) {
+      toRemove.push(cls); // ex: "md:hover:bg-red-500/50"
+    }
+  }
+  toRemove.forEach(c => el.classList.remove(c));
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -157,6 +208,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   elementThis.addEventListener('click', onClickVal1)
   elementThat.addEventListener('click', onClickVal2)
   elementResetQuestions.addEventListener('click', resetQuestions)
+  elementDisconnect.addEventListener('click', disconnectUser)
+
   user = await checkAuth()
   document.getElementById("user").innerHTML = user.name
   bannedQuestions = await fetchBannedQuestions()

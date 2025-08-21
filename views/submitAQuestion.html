@@ -20,7 +20,7 @@
     rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
-   <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <title>This or That</title>
@@ -55,7 +55,7 @@
           <a id="resetQuestions" href="#"
             class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Reset
             Questions</a>
-          <a href="#"
+          <a id="disconnect" href="#"
             class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Se
             déconnecter</a>
         </div>
@@ -63,29 +63,25 @@
     </el-dropdown>
   </div>
 
-  <div class="bigSeparator"></div>
-  <div class="bigSeparator"></div>
-
   <div class="centered">
     <div class="form">
-      <div class="input-container">
+      <div class="input-container" style="margin-top: 10vh;">
         <label for="Question1">Premier choix : </label>
         <input type="text" name="Question1" id="Question1" required />
       </div>
-      <div class="littleSeparator"></div>
-      <div class="input-container">
+
+      <div class="input-container" style="margin-top: 2vh;">
         <label for="Question2">Deuxième choix : </label>
         <input type="text" name="Question2" id="Question2" required />
       </div>
-      <div class="littleSeparator"></div>
-      <div class="button" onClick="onClickQuestionFormSubmission()">
-        <button id="formSubmissionButton">submit</button>
+
+      <div class="centered bg-gray-500 hover:bg-gray-700 text-white old py-2 px-4 rounded" style="margin-top: 7vh;"
+        onClick="onClickQuestionFormSubmission()">
+        <button id="formSubmissionButton">Envoyer ma question !</button>
       </div>
 
-      <div class="littleSeparator"></div>
-
-      <div class="button">
-        <a href="/playTheGame.html">Return to the game !</a>
+      <div class="centered bg-gray-500/25 hover:bg-gray-700/25 text-white old py-2 px-4 rounded" style="margin-top: 46vh;">
+        <a href="/playTheGame.html">Retourner au jeu !</a>
       </div>
     </div>
   </div>

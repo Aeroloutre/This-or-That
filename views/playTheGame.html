@@ -55,11 +55,9 @@
         class="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 z-50">
         <div class="py-1">
           <a id="resetQuestions" href="#"
-            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Reset
-            Questions</a>
-          <a href="#"
-            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Se
-            déconnecter</a>
+            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Supprimer l'historique</a>
+          <a id="disconnect" href="#"
+            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Se déconnecter</a>
         </div>
       </el-menu>
     </el-dropdown>
@@ -67,18 +65,18 @@
 
   <div id="content">
 
-    <div class="centered">
+    <div class="centered" style="margin-top: 10vh">
       <h1 class="text-2xl font-bold">
         Tu préfères :
       </h1>
     </div>
 
-    <div class="centered">
+    <div class="centered" style="margin-top: 7vh; margin-bottom: 2vh;">
       <button id="this" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         this
       </button>
 
-      <button style="margin-top: 2vh; margin-bottom: 2vh;" id="%this" type="button"
+      <button style="margin-top: 2vh"; id="%this" type="button"
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         %
       </button>
@@ -90,7 +88,7 @@
       </h1>
     </div>
 
-    <div class="centered">
+    <div class="centered" style="margin-top: 7vh; margin-bottom: 5vh;">
       <button id="that" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         That
       </button>
@@ -101,16 +99,20 @@
       </button>
     </div>
 
-    <div class="centered">
+    <div class="centered" style="margin-top: 15vh">
       <h1 class="text-2xl font-bold">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="next" type="button">
-          NEXT
+        <button class="bg-blue-500/75 hover:bg-blue-700/100 text-white font-bold py-2 px-4 rounded" id="next" type="button">
+          Prochaine question
         </button>
       </h1>
     </div>
 
-    <div class="centered">
-      <a href="/submitAQuestion.html">Submit a question !</a>
+    <div class="centered" style="margin-top: 15vh">
+      <h1 class="font-bold">
+        <button class="bg-gray-500/25 hover:bg-gray-700/25 text-white old py-2 px-4 rounded" id="next" type="button">
+          <a href="/submitAQuestion.html">Créer ma question !</a>
+        </button>
+      </h1>
     </div>
 
   </div>

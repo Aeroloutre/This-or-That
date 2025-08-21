@@ -6,7 +6,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
   <link href="/CSS/style.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,36 +35,27 @@
     The Game
   </h1>
 
-  <div class="bigSeparator"></div>
-  <div class="bigSeparator"></div>
-
   <div class="centered">
 
     <div class="form">
-      <div class="input-container">
+      <div class="input-container" style="margin-top: 10vh;">
         <label for="email">Email :</label>
         <input type="text" id="email" required>
       </div>
 
-      <div class="littleSeparator"></div>
-
-      <div class="input-container">
+      <div class="input-container" style="margin-top: 2vh;">
         <label for="password">Mot de passe :</label>
         <input type="password" name="password" id="password" required />
       </div>
 
-      <div class="littleSeparator"></div>
-
-      <div>
-        <button class="button" id="formSubmissionButton" onClick="onClickLoginFormSubmission()">Connexion</button>
+      <div class="centered bg-gray-500 hover:bg-gray-700 text-white old py-2 px-4 rounded" style="margin-top: 7vh;">
+        <button id="formSubmissionButton" onClick="onClickLoginFormSubmission()">Connexion</button>
       </div>
-    
 
-    <div class="bigSeparator"></div>
-
-    <div id="start" class="button">
-      <a href="/accountCreation.html">Je n'ai pas de compte</a>
-    </div>
+      <div id="start" class="centered bg-gray-500/25 hover:bg-gray-700/25 text-white old py-2 px-4 rounded"
+        style="margin-top: 46vh;">
+        <a href="/accountCreation.html">Je n'ai pas de compte</a>
+      </div>
     </div>
   </div>
 

@@ -1,9 +1,10 @@
 let user
-const elementResetQuestions = document.getElementById('resetQuestions')
+let bannedQuestions
+
 const elementProposalThis = document.getElementById('Question1')
 const elementProposalThat = document.getElementById('Question2')
-
-elementResetQuestions.addEventListener('click', resetQuestions)
+const elementDisconnect = document.getElementById('disconnect')
+const elementResetQuestions = document.getElementById('resetQuestions')
 
 async function onClickQuestionFormSubmission() {
   document.getElementById("formSubmissionButton").disabled = true;
@@ -36,7 +37,7 @@ async function onClickQuestionFormSubmission() {
 
 async function resetQuestions() {
   const userId = user.id
-  const response = await fetch(`/resetQuestions/${userId}`, { 
+  const response = await fetch(`/resetQuestions/${userId}`, {
     method: 'DELETE',
     headers: {
       authorization: 'Bearer ' + localStorage.getItem('token')
@@ -48,8 +49,17 @@ async function resetQuestions() {
   console.log('Vous pouvez désormais revoir :' + deletedBannedQuestions + " questions !")
 }
 
+function disconnectUser() {
+  localStorage.removeItem("token");
+  location.reload();
+  alert('Vous avez été déconnecté !')
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
+  elementDisconnect.addEventListener('click', disconnectUser)
+  elementResetQuestions.addEventListener('click', resetQuestions)
+
   user = await checkAuth()
   document.getElementById("user").innerHTML = user.name
-  return(user)
+  return (user)
 });
