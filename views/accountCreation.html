@@ -37,7 +37,7 @@
 
     <div class="centered">
 
-        <div class="form">
+        <form class="form" onSubmit="onClickRegisterFormSubmission(event)">
             <div class="input-container" style="margin-top: 10vh;">
                 <label for="name">Nom :</label>
                 <input type="text" id="name" required>
@@ -45,7 +45,7 @@
 
             <div class="input-container" style="margin-top: 2vh;">
                 <label for="email">Email :</label>
-                <input type="text" id="email" required>
+                <input type="email" id="email" required>
             </div>
 
             <div class="input-container" style="margin-top: 2vh;">
@@ -55,14 +55,14 @@
 
             <div class="centered bg-gray-500 hover:bg-gray-700 text-white old py-2 px-4 rounded"
                 style="margin-top: 7vh;">
-                <button id="formSubmissionButton" onClick="onClickRegisterFormSubmission()">Créer mon compte!</button>
+                <button type="submit" id="formSubmissionButton" >Créer mon compte!</button>
             </div>
 
             <div id="start" class=" centered bg-gray-500/25 hover:bg-gray-700/25 text-white old py-2 px-4 rounded"
                 style="margin-top: 30vh;">
                 <a href="/index.html">J'ai déjà un compte</a>
             </div>
-        </div>
+        </form>
     </div>
 
     <script type="text/javascript" src="/JS/accountCreation.js"></script>

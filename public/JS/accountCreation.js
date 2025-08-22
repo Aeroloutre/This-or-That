@@ -1,5 +1,6 @@
-async function onClickRegisterFormSubmission() {
+async function onClickRegisterFormSubmission(event) {
 
+  event.preventDefault();
   //document.getElementById("formSubmissionButton").disabled = true;
   const name = document.getElementById("name").value
   const email = document.getElementById("email").value
@@ -8,7 +9,7 @@ async function onClickRegisterFormSubmission() {
   console.log("email saisi :", email);
   console.log("password saisi :", password);
 
-  const response = await fetch(`/users`, {
+  const response = await fetch(`/createUser`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json' // pour que req.body fonctionne
