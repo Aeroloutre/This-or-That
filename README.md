@@ -1,4 +1,4 @@
-Work in progress to create a site where you can make dumb choices !
+This or That is a website site created for you to make dumb choices !
 
 Url : https://this-or-that-r6ky.onrender.com
 
